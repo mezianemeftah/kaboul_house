@@ -29,7 +29,20 @@ export const product = defineType({
       name: "images",
       title: "Photos",
       type: "array",
-      of: [{ type: "image", options: { hotspot: true } }],
+      of: [
+        {
+          type: "image",
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: "alt",
+              title: "Texte alternatif",
+              description: "Décrit la photo pour les lecteurs d'écran et Google (ex. « Tapis afghan rouge noué main »).",
+              type: "string",
+            }),
+          ],
+        },
+      ],
       validation: (rule) => rule.min(1).error("Au moins une photo."),
     }),
     defineField({ name: "description", title: "Description", type: "text", rows: 4 }),

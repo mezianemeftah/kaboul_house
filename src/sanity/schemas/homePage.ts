@@ -24,6 +24,14 @@ export const homePage = defineType({
       description: "Photo plein écran derrière le titre. Sans photo, l'image par défaut est utilisée.",
       type: "image",
       options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Texte alternatif",
+          description: "Décrit la photo pour les lecteurs d'écran et Google (ex. « Tapis afghan rouge noué main »).",
+          type: "string",
+        }),
+      ],
     }),
   ],
   preview: { prepare: () => ({ title: "Page d'accueil" }) },

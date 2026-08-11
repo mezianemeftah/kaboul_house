@@ -27,7 +27,23 @@ export const shop = defineType({
       type: "text",
       rows: 3,
     }),
-    defineField({ name: "image", title: "Photo", type: "image", options: { hotspot: true } }),
+    defineField({
+      name: "image",
+      title: "Photo",
+      type: "image",
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Texte alternatif",
+          description: "Décrit la photo pour les lecteurs d'écran et Google (ex. « Tapis afghan rouge noué main »).",
+          type: "string",
+        }),
+      ],
+    }),
     defineField({ name: "order", title: "Ordre d'affichage", type: "number", initialValue: 10 }),
   ],
+  preview: {
+    select: { title: "name", media: "image" },
+  },
 });

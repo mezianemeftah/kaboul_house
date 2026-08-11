@@ -26,6 +26,14 @@ export const siteSettings = defineType({
       name: "ogImage",
       title: "Image de partage (réseaux sociaux)",
       type: "image",
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Texte alternatif",
+          description: "Décrit la photo pour les lecteurs d'écran et Google (ex. « Tapis afghan rouge noué main »).",
+          type: "string",
+        }),
+      ],
     }),
   ],
   preview: { prepare: () => ({ title: "Réglages du site" }) },
