@@ -12,4 +12,10 @@ describe("whatsappUrl", () => {
     expect(whatsappUrl(undefined)).toBe("/boutiques");
     expect(whatsappUrl("")).toBe("/boutiques");
   });
+  it("gère le préfixe international 00", () => {
+    expect(whatsappUrl("0033 7 80 79 96 89")).toBe("https://wa.me/33780799689");
+  });
+  it("gère le format local FR sans indicatif", () => {
+    expect(whatsappUrl("07 80 79 96 89")).toBe("https://wa.me/33780799689");
+  });
 });
