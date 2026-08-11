@@ -1,0 +1,8 @@
+node_modules/
+.next/
+.open-next/
+.sanity/
+.env*.local
+*.tsbuildinfo
+next-env.d.ts
+.wrangler/
