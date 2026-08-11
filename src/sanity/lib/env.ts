@@ -1,5 +1,8 @@
 function required(value: string | undefined, name: string): string {
-  if (!value) throw new Error(`Variable d'environnement manquante : ${name}`);
+  if (!value) {
+    if (process.env.SANITY_OFFLINE === "1") return "offline0";
+    throw new Error(`Variable d'environnement manquante : ${name}`);
+  }
   return value;
 }
 
