@@ -82,7 +82,7 @@ Stack précise : Next.js 16, React 19, Tailwind CSS 4, `next-sanity`, `sanity` v
 
 ## Optimisation
 
-- **Images** : transformations par le CDN Sanity (`auto=format` → AVIF/WebP, resize, qualité ~75) via un **loader `next/image` custom** — zéro coût, pas de service d'optimisation Cloudflare nécessaire. `hero-intro.png` (asset local) passe par le même loader ou est pré-optimisé en AVIF au build.
+- **Images** : transformations par le CDN Sanity (`auto=format` → AVIF/WebP, resize, qualité ~75) via un **loader `next/image` custom** — zéro coût, pas de service d'optimisation Cloudflare nécessaire. `hero-intro.png` (asset local, ~6,7 Mo) est converti une fois en AVIF/WebP dans `public/images/` et servi tel quel (pas d'optimisation d'images à la volée sur Workers) ; les images éditoriales passent par Sanity, donc ce cas reste l'exception.
 - **Polices** : Bonny en `next/font/local` (woff2, subset), Josefin Sans en `next/font/google` — preload, `font-display: swap`, zéro CLS.
 - **JS minimal** : Server Components partout ; seuls îlots clients : SmoothScrollProvider (Lenis), reveals Motion, burger nav. `MotionConfig reducedMotion="user"` global.
 - **Budget** : Lighthouse ≥ 95 (mobile) sur toutes les pages, LCP < 2 s, CLS < 0.1.
