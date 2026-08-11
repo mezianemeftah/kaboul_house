@@ -1,1 +1,58 @@
 @import "tailwindcss";
+
+:root {
+  --background: #ffebed;
+  --foreground: #241a18;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Palette Kaboul House — docs/superpowers/specs/2026-08-10-design-system-design.md */
+  --color-blush: #ffebed;
+  --color-blush-2: #f6d9da;
+  --color-grenat: #8a1a1a;
+  --color-grenat-vif: #b33327;
+  --color-grenat-profond: #5e1212;
+  --color-petrole: #014652;
+  --color-petrole-clair: #0c5b69;
+  --color-encre: #241a18;
+  --color-encre-douce: #5c4a47;
+  --color-creme: #fbefea;
+
+  --font-bonny: var(--font-bonny-local);
+  --font-josefin: var(--font-josefin-google);
+  --font-sans: var(--font-josefin);
+
+  /* Échelle d'espacement — croît en se rapprochant de l'action */
+  --spacing-sp-1: 6px;
+  --spacing-sp-2: 10px;
+  --spacing-sp-3: 16px;
+  --spacing-sp-4: 24px;
+  --spacing-sp-5: 36px;
+  --spacing-sp-6: 56px;
+
+  --radius-pill: 999px;
+  --radius-panel: 18px;
+  --radius-hero: 28px;
+
+  --ease-signature: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-josefin), sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
