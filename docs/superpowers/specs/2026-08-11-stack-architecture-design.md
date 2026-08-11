@@ -87,6 +87,17 @@ Stack précise : Next.js 16, React 19, Tailwind CSS 4, `next-sanity`, `sanity` v
 - **JS minimal** : Server Components partout ; seuls îlots clients : SmoothScrollProvider (Lenis), reveals Motion, burger nav. `MotionConfig reducedMotion="user"` global.
 - **Budget** : Lighthouse ≥ 95 (mobile) sur toutes les pages, LCP < 2 s, CLS < 0.1.
 
+## Layout hero page d'accueil (référence validée 2026-08-11)
+
+Le hero de l'accueil suit précisément le layout d'une capture de référence fournie par l'utilisateur (template type « BLINK »), en conservant typographies, couleurs et styles de boutons déjà validés :
+
+- **Carte image plein viewport** : la photo occupe quasi tout l'écran, coins arrondis (~24-32 px), décollée des bords par une fine marge sur fond blush `#FFEBED`.
+- **Nav en overlay sur la photo** (pas de bandeau séparé) : logo « Kaboul House » (Bonny, blanc) à gauche ; liens de nav centrés (Josefin Sans, graisse 400, blanc, casse normale) ; CTA pilule à droite (style validé : fond crème/blush, bordure fine grenat, texte grenat gras, étoile 4 branches qui pivote au survol). Grille 3 colonnes `1fr auto 1fr` pour un centrage stable des liens ; burger sous ~760 px.
+- **Bloc central centré verticalement et horizontalement** : H1 sur deux lignes (Bonny, blanc, line-height .9, reveal mot-par-mot), sous-titre court en dessous (Josefin Sans, blanc, max ~2 lignes). Pas de bouton dans le bloc central.
+- **Photo** : `hero-intro.png` (droits confirmés) avec scrim sombre pour garantir le contraste du texte blanc.
+
+Ce layout remplace, pour ce hero, la disposition nav « logo gauche / liens groupés à droite » retenue précédemment.
+
 ## Gestion d'erreurs
 
 - `not-found.tsx` et `error.tsx` stylés DA.
