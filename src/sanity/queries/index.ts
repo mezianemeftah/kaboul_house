@@ -1,7 +1,7 @@
 import { defineQuery } from "next-sanity";
 
 export const SETTINGS_QUERY = defineQuery(
-  `*[_type == "siteSettings"][0]{whatsapp, phone, instagram, facebook, seoDescription, ogImage}`,
+  `*[_type == "siteSettings"][0]{whatsapp, phone, instagram, facebook, googleReviewsUrl, seoDescription, ogImage}`,
 );
 
 export const HOME_QUERY = defineQuery(

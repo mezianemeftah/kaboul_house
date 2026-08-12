@@ -326,12 +326,13 @@ export type AllSanitySchemaTypes =
 
 // Source: src/sanity/queries/index.ts
 // Variable: SETTINGS_QUERY
-// Query: *[_type == "siteSettings"][0]{whatsapp, phone, instagram, facebook, seoDescription, ogImage}
+// Query: *[_type == "siteSettings"][0]{whatsapp, phone, instagram, facebook, googleReviewsUrl, seoDescription, ogImage}
 export type SETTINGS_QUERY_RESULT = {
   whatsapp: string | null;
   phone: string | null;
   instagram: string | null;
   facebook: string | null;
+  googleReviewsUrl: string | null;
   seoDescription: string | null;
   ogImage: {
     asset?: SanityImageAssetReference;
@@ -525,7 +526,7 @@ export type SHOPS_QUERY_RESULT = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '*[_type == "siteSettings"][0]{whatsapp, phone, instagram, facebook, seoDescription, ogImage}': SETTINGS_QUERY_RESULT;
+    '*[_type == "siteSettings"][0]{whatsapp, phone, instagram, facebook, googleReviewsUrl, seoDescription, ogImage}': SETTINGS_QUERY_RESULT;
     '*[_type == "homePage"][0]{\n    heroTitle, heroSubtitle, heroImage,\n    aboutTitle, aboutText,\n    "categories": *[_type == "category"] | order(order asc){\n      title, "slug": slug.current, description, image\n    },\n    "featuredProducts": *[_type == "product" && featured == true]\n      | order(_updatedAt desc)[0...5]{\n        title, "slug": slug.current, images,\n        "categoryTitle": category->title\n    },\n    "shops": *[_type == "shop"] | order(order asc){\n      name, address, phone, email, hours, mapsUrl\n    },\n    "reviews": *[_type == "googleReview"] | order(_createdAt desc)[0...6]{\n      _id, author, rating, text\n    }\n  }': HOME_QUERY_RESULT;
     '*[_type == "aboutPage"][0]{title, intro, story, image}': ABOUT_QUERY_RESULT;
     '*[_type == "category" && slug.current == $slug][0]{\n    title, description, image,\n    "products": *[_type == "product" && category._ref == ^._id]\n      | order(featured desc, title asc){\n        title, "slug": slug.current, description, images\n    }\n  }': CATEGORY_QUERY_RESULT;
