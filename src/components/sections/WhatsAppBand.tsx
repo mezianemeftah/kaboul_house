@@ -1,12 +1,15 @@
 "use client";
 
 import { cubicBezier, motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import { Pill } from "@/components/ui/Pill";
 import { AmbianceVideo } from "./AmbianceVideo";
 
 /** Sortie douce : la vidéo prend vite sa taille, puis se pose. */
 const EASE = cubicBezier(0.33, 1, 0.68, 1);
+
+/** L'état ne change jamais : seul l'écart serveur/client nous intéresse. */
+const subscribeNever = () => () => {};
 
 /**
  * Section WhatsApp plein écran, en recouvrement.
@@ -29,6 +32,11 @@ export function WhatsAppBand({ whatsappHref }: { whatsappHref: string }) {
   const ref = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
 
+  // Le rendu serveur ignore l'échelle : on ne l'applique qu'une fois hydraté,
+  // sinon le premier rendu client diffère du HTML servi (erreur d'hydratation).
+  const hydrated = useSyncExternalStore(subscribeNever, () => true, () => false);
+  const animate = hydrated && !reduceMotion;
+
   // De « le haut de la section touche le bas de l'écran » à « il touche le haut ».
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -41,7 +49,7 @@ export function WhatsAppBand({ whatsappHref }: { whatsappHref: string }) {
     <section ref={ref} className="relative z-10 h-svh w-full overflow-hidden">
       <motion.div
         className="absolute inset-0 overflow-hidden"
-        style={reduceMotion ? undefined : { scale, borderRadius }}
+        style={animate ? { scale, borderRadius } : undefined}
         aria-hidden
       >
         <AmbianceVideo />
