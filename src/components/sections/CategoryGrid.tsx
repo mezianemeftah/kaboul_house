@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { FALLBACK_CATEGORIES } from "@/lib/fallback-content";
 import { imageUrl } from "@/sanity/lib/image";
 import type { HOME_QUERY_RESULT } from "@/sanity/types";
 
@@ -39,38 +40,7 @@ const FALLBACK_IMAGES: Record<string, { imageSrc: string; alt: string }> = {
   },
 };
 
-const FALLBACK: Card[] = [
-  {
-    slug: "tapis",
-    kicker: "Sol",
-    title: "Tapis & Qali",
-    description: "Du noué main afghan aux grands formats turcs et persans.",
-  },
-  {
-    slug: "toshak",
-    kicker: "Assise",
-    title: "Toshak & Majlis",
-    description: "L'assise afghane traditionnelle : kabuli, 2 ou 3 baleshta.",
-  },
-  {
-    slug: "textiles",
-    kicker: "Intérieur",
-    title: "Textiles & Décor",
-    description: "Sarqalini, rojayi, balesht — pour habiller chaque pièce.",
-  },
-  {
-    slug: "art-de-la-table",
-    kicker: "Table",
-    title: "Art de la Table",
-    description: "Services dorés, plateaux, thermos. L'hospitalité dressée.",
-  },
-  {
-    slug: "fruits-secs",
-    kicker: "Saveurs",
-    title: "Fruits Secs d'Afghanistan",
-    description: "Amandes, pistaches, mûres — bio, et prêts à offrir.",
-  },
-].map((c) => ({
+const FALLBACK: Card[] = FALLBACK_CATEGORIES.map((c) => ({
   ...c,
   src: FALLBACK_IMAGES[c.slug]?.imageSrc ?? null,
   alt: FALLBACK_IMAGES[c.slug]?.alt ?? "",
@@ -118,7 +88,7 @@ export function CategoryGrid({ categories }: { categories: Category[] | null | u
   const cards = toCards(categories);
 
   return (
-    <section id="univers" className="px-sp-4 py-sp-6 md:px-sp-5 md:py-24">
+    <section className="px-sp-4 py-sp-6 md:px-sp-5 md:py-24">
       <div className="mx-auto max-w-6xl">
         <div className="text-grenat">
           <SectionLabel>Nos univers</SectionLabel>

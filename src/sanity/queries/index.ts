@@ -39,6 +39,11 @@ export const CATEGORY_QUERY = defineQuery(
   }`,
 );
 
+/** Menu déroulant de la navigation : juste de quoi construire les liens. */
+export const NAV_CATEGORIES_QUERY = defineQuery(
+  `*[_type == "category"] | order(order asc){title, "slug": slug.current}`,
+);
+
 export const CATEGORY_SLUGS_QUERY = defineQuery(
   `*[_type == "category" && defined(slug.current)]{"slug": slug.current}`,
 );

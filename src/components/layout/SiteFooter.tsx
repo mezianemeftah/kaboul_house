@@ -22,7 +22,7 @@ export function SiteFooter({ settings }: { settings: SETTINGS_QUERY_RESULT | nul
           </p>
         </div>
         <nav className="flex flex-col gap-sp-2">
-          <Link href="/notre-maison" className="opacity-85 transition-opacity hover:opacity-100">Qui sommes-nous</Link>
+          <Link href="/#la-maison" className="opacity-85 transition-opacity hover:opacity-100">Qui sommes-nous</Link>
           <Link href="/#univers" className="opacity-85 transition-opacity hover:opacity-100">Nos univers</Link>
           <Link href="/boutiques" className="opacity-85 transition-opacity hover:opacity-100">Nos boutiques</Link>
         </nav>

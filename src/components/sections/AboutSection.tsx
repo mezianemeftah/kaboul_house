@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 
 const FALLBACK_TITLE = "Kaboul House, une histoire de famille";
@@ -10,10 +9,13 @@ const FALLBACK_TEXT =
  * Mise en page éditoriale : deux photos décalées à gauche, le récit à droite.
  * L'ordre du DOM place le texte en premier — c'est lui qui compte sur mobile —
  * et `order` rétablit la composition magazine à partir de md.
+ *
+ * `scroll-mt` : la nav flotte au-dessus du contenu, sans cette marge le titre
+ * se retrouverait caché dessous à l'arrivée depuis « Qui sommes-nous ».
  */
 export function AboutSection({ title, text }: { title: string | null; text: string | null }) {
   return (
-    <section className="px-sp-4 py-sp-6 md:px-sp-5 md:py-24">
+    <section id="la-maison" className="scroll-mt-28 px-sp-4 py-sp-6 md:px-sp-5 md:py-24">
       <div className="mx-auto grid max-w-6xl gap-sp-4 md:grid-cols-12 md:items-start md:gap-sp-5">
         <div className="md:order-3 md:col-span-4">
           <div className="text-grenat">
@@ -25,12 +27,6 @@ export function AboutSection({ title, text }: { title: string | null; text: stri
           <p className="mt-sp-4 font-light leading-relaxed text-encre-douce">
             {text ?? FALLBACK_TEXT}
           </p>
-          <Link
-            href="/notre-maison"
-            className="mt-sp-5 inline-block font-normal text-grenat underline-offset-4 transition-colors hover:underline"
-          >
-            Découvrir qui nous sommes →
-          </Link>
         </div>
 
         <div className="relative aspect-[3/4] overflow-hidden rounded-panel md:order-1 md:col-span-5">

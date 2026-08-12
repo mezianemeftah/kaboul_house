@@ -34,6 +34,12 @@ export default async function HomePage() {
       */}
       <div className="relative">
         {/*
+          Ancre de navigation posée dans le flux, hors de l'élément collant :
+          un lien visant directement la section figée atterrirait sur sa
+          position collée, pas sur celle qu'elle occupe dans la page.
+        */}
+        <span id="univers" className="absolute top-0 block scroll-mt-28" aria-hidden />
+        {/*
           `min-h-svh` : sur grand écran la section est plus courte que la fenêtre.
           Sans ce plancher, elle se figerait trop tôt et une bande de blush
           s'ouvrirait au-dessus d'elle. Avec, son haut arrive pile à 0 au moment

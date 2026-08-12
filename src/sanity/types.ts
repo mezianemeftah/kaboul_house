@@ -470,6 +470,14 @@ export type CATEGORY_QUERY_RESULT = {
 } | null;
 
 // Source: src/sanity/queries/index.ts
+// Variable: NAV_CATEGORIES_QUERY
+// Query: *[_type == "category"] | order(order asc){title, "slug": slug.current}
+export type NAV_CATEGORIES_QUERY_RESULT = Array<{
+  title: string | null;
+  slug: string | null;
+}>;
+
+// Source: src/sanity/queries/index.ts
 // Variable: CATEGORY_SLUGS_QUERY
 // Query: *[_type == "category" && defined(slug.current)]{"slug": slug.current}
 export type CATEGORY_SLUGS_QUERY_RESULT = Array<{
@@ -550,6 +558,7 @@ declare module "@sanity/client" {
     '*[_type == "homePage"][0]{\n    heroTitle, heroSubtitle, heroImage,\n    aboutTitle, aboutText,\n    "categories": *[_type == "category"] | order(order asc){\n      title, "slug": slug.current, kicker, description, image\n    },\n    "featuredProducts": *[_type == "product" && featured == true]\n      | order(_updatedAt desc)[0...5]{\n        title, "slug": slug.current, images,\n        "categoryTitle": category->title\n    },\n    "shops": *[_type == "shop"] | order(order asc){\n      name, address, phone, email, hours, mapsUrl\n    },\n    "reviews": *[_type == "googleReview"] | order(_createdAt desc)[0...6]{\n      _id, author, rating, text\n    }\n  }': HOME_QUERY_RESULT;
     '*[_type == "aboutPage"][0]{title, intro, story, image}': ABOUT_QUERY_RESULT;
     '*[_type == "category" && slug.current == $slug][0]{\n    title, description, image,\n    "products": *[_type == "product" && category._ref == ^._id]\n      | order(featured desc, title asc){\n        title, "slug": slug.current, description, images\n    }\n  }': CATEGORY_QUERY_RESULT;
+    '*[_type == "category"] | order(order asc){title, "slug": slug.current}': NAV_CATEGORIES_QUERY_RESULT;
     '*[_type == "category" && defined(slug.current)]{"slug": slug.current}': CATEGORY_SLUGS_QUERY_RESULT;
     '*[_type == "product" && slug.current == $slug][0]{\n    title, description, images,\n    "category": category->{title, "slug": slug.current}\n  }': PRODUCT_QUERY_RESULT;
     '*[_type == "product"] | order(title asc){title, "slug": slug.current, images, "categoryTitle": category->title}': ALL_PRODUCTS_QUERY_RESULT;
