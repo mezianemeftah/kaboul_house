@@ -87,6 +87,20 @@ Stack précise : Next.js 16, React 19, Tailwind CSS 4, `next-sanity`, `sanity` v
 - **JS minimal** : Server Components partout ; seuls îlots clients : SmoothScrollProvider (Lenis), reveals Motion, burger nav. `MotionConfig reducedMotion="user"` global.
 - **Budget** : Lighthouse ≥ 95 (mobile) sur toutes les pages, LCP < 2 s, CLS < 0.1.
 
+## Structure page d'accueil (révision 2026-08-12, validée par l'utilisateur)
+
+Sept sections, dans cet ordre :
+
+1. **Hero** (layout BLINK ci-dessous) — l'introduction du site.
+2. **Listing des univers** — 3 catégories : Tapis, Décoration, Fruits secs (le contenu passe de 5 à 3 univers).
+3. **Bandeau CTA WhatsApp** (fond pétrole).
+4. **Section « La maison »** — présentation courte de Kaboul House + lien vers la page Qui sommes-nous (`/notre-maison`).
+5. **Produits mis en avant** — 5 produits (flag `featured` dans Sanity) en bento grid.
+6. **Contact en onglets** — Grenoble / Lyon ; pour chaque boutique : adresse, email, téléphone, lien itinéraire (Google Maps). Lyon en placeholder tant que les coordonnées ne sont pas connues.
+7. **Avis Google** — collection Sanity `googleReview` administrable (auteur, note, texte). Vide au lancement : état vide soigné, pas de faux avis (décision client maintenue). Lien « voir tous les avis » via `siteSettings.googleReviewsUrl`.
+
+Extensions de schémas induites : `shop` + `email` + `mapsUrl`, `homePage` + `aboutTitle`/`aboutText`, nouveau type `googleReview`, `siteSettings` + `googleReviewsUrl`. Tout le contenu reste administrable ; le code fournit des fallbacks français rédigés pour que le site soit présentable avant la saisie dans Sanity.
+
 ## Layout hero page d'accueil (référence validée 2026-08-11)
 
 Le hero de l'accueil suit précisément le layout d'une capture de référence fournie par l'utilisateur (template type « BLINK »), en conservant typographies, couleurs et styles de boutons déjà validés :
