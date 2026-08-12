@@ -9,6 +9,7 @@ describe("tagsForType", () => {
     expect(tagsForType("homePage")).toEqual(["homePage"]);
     expect(tagsForType("aboutPage")).toEqual(["aboutPage"]);
     expect(tagsForType("siteSettings")).toEqual(["settings"]);
+    expect(tagsForType("googleReview")).toEqual(["googleReview"]);
   });
   it("ignore les types inconnus (pas de retry storm)", () => {
     expect(tagsForType("autre")).toEqual([]);

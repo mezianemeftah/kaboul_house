@@ -21,6 +21,18 @@ export const shop = defineType({
     }),
     defineField({ name: "phone", title: "Téléphone", type: "string" }),
     defineField({
+      name: "email",
+      title: "Email",
+      type: "string",
+      description: "Adresse email de contact de la boutique.",
+    }),
+    defineField({
+      name: "mapsUrl",
+      title: "Lien itinéraire (Google Maps)",
+      type: "url",
+      description: "Coller le lien de partage Google Maps de la boutique.",
+    }),
+    defineField({
       name: "hours",
       title: "Horaires",
       description: "Texte libre, ex. « Lun–Sam : 10h–19h ».",

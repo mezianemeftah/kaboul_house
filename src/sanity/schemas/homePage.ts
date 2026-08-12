@@ -33,6 +33,20 @@ export const homePage = defineType({
         }),
       ],
     }),
+    defineField({
+      name: "aboutTitle",
+      title: "Titre de la section « La maison »",
+      type: "string",
+      description: "Titre de la section qui présente Kaboul House sur l'accueil.",
+    }),
+    defineField({
+      name: "aboutText",
+      title: "Texte de la section « La maison »",
+      type: "text",
+      rows: 4,
+      description:
+        "Quelques phrases de présentation — le lien vers « Qui sommes-nous » est ajouté automatiquement.",
+    }),
   ],
   preview: { prepare: () => ({ title: "Page d'accueil" }) },
 });

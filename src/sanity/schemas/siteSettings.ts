@@ -16,6 +16,12 @@ export const siteSettings = defineType({
     defineField({ name: "instagram", title: "Lien Instagram", type: "url" }),
     defineField({ name: "facebook", title: "Lien Facebook", type: "url" }),
     defineField({
+      name: "googleReviewsUrl",
+      title: "Lien vers la fiche Google (avis)",
+      type: "url",
+      description: "Lien « Voir tous les avis » affiché sous la section Avis Google.",
+    }),
+    defineField({
       name: "seoDescription",
       title: "Description SEO par défaut",
       description: "Une à deux phrases affichées dans les résultats Google.",

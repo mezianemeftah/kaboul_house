@@ -15,6 +15,17 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: .sanity/schema.json
+export type GoogleReview = {
+  _id: string;
+  _type: "googleReview";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  author?: string;
+  rating?: number;
+  text?: string;
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -31,6 +42,8 @@ export type Shop = {
   name?: string;
   address?: string;
   phone?: string;
+  email?: string;
+  mapsUrl?: string;
   hours?: string;
   image?: {
     asset?: SanityImageAssetReference;
@@ -166,6 +179,8 @@ export type HomePage = {
     alt?: string;
     _type: "image";
   };
+  aboutTitle?: string;
+  aboutText?: string;
 };
 
 export type SiteSettings = {
@@ -178,6 +193,7 @@ export type SiteSettings = {
   phone?: string;
   instagram?: string;
   facebook?: string;
+  googleReviewsUrl?: string;
   seoDescription?: string;
   ogImage?: {
     asset?: SanityImageAssetReference;
@@ -287,6 +303,7 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | GoogleReview
   | SanityImageAssetReference
   | Shop
   | SanityImageCrop
@@ -328,7 +345,7 @@ export type SETTINGS_QUERY_RESULT = {
 
 // Source: src/sanity/queries/index.ts
 // Variable: HOME_QUERY
-// Query: *[_type == "homePage"][0]{    heroTitle, heroSubtitle, heroImage,    "categories": *[_type == "category"] | order(order asc){      title, "slug": slug.current, description, image    }  }
+// Query: *[_type == "homePage"][0]{    heroTitle, heroSubtitle, heroImage,    aboutTitle, aboutText,    "categories": *[_type == "category"] | order(order asc){      title, "slug": slug.current, description, image    },    "featuredProducts": *[_type == "product" && featured == true]      | order(_updatedAt desc)[0...5]{        title, "slug": slug.current, images,        "categoryTitle": category->title    },    "shops": *[_type == "shop"] | order(order asc){      name, address, phone, email, hours, mapsUrl    },    "reviews": *[_type == "googleReview"] | order(_createdAt desc)[0...6]{      _id, author, rating, text    }  }
 export type HOME_QUERY_RESULT = {
   heroTitle: string | null;
   heroSubtitle: string | null;
@@ -340,6 +357,8 @@ export type HOME_QUERY_RESULT = {
     alt?: string;
     _type: "image";
   } | null;
+  aboutTitle: string | null;
+  aboutText: string | null;
   categories: Array<{
     title: string | null;
     slug: string | null;
@@ -352,6 +371,34 @@ export type HOME_QUERY_RESULT = {
       alt?: string;
       _type: "image";
     } | null;
+  }>;
+  featuredProducts: Array<{
+    title: string | null;
+    slug: string | null;
+    images: Array<{
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+      _key: string;
+    }> | null;
+    categoryTitle: string | null;
+  }>;
+  shops: Array<{
+    name: string | null;
+    address: string | null;
+    phone: string | null;
+    email: string | null;
+    hours: string | null;
+    mapsUrl: string | null;
+  }>;
+  reviews: Array<{
+    _id: string;
+    author: string | null;
+    rating: number | null;
+    text: string | null;
   }>;
 } | null;
 
@@ -456,12 +503,14 @@ export type PRODUCT_SLUGS_QUERY_RESULT = Array<{
 
 // Source: src/sanity/queries/index.ts
 // Variable: SHOPS_QUERY
-// Query: *[_type == "shop"] | order(order asc){name, address, phone, hours, image}
+// Query: *[_type == "shop"] | order(order asc){name, address, phone, email, hours, mapsUrl, image}
 export type SHOPS_QUERY_RESULT = Array<{
   name: string | null;
   address: string | null;
   phone: string | null;
+  email: string | null;
   hours: string | null;
+  mapsUrl: string | null;
   image: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -477,12 +526,12 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "siteSettings"][0]{whatsapp, phone, instagram, facebook, seoDescription, ogImage}': SETTINGS_QUERY_RESULT;
-    '*[_type == "homePage"][0]{\n    heroTitle, heroSubtitle, heroImage,\n    "categories": *[_type == "category"] | order(order asc){\n      title, "slug": slug.current, description, image\n    }\n  }': HOME_QUERY_RESULT;
+    '*[_type == "homePage"][0]{\n    heroTitle, heroSubtitle, heroImage,\n    aboutTitle, aboutText,\n    "categories": *[_type == "category"] | order(order asc){\n      title, "slug": slug.current, description, image\n    },\n    "featuredProducts": *[_type == "product" && featured == true]\n      | order(_updatedAt desc)[0...5]{\n        title, "slug": slug.current, images,\n        "categoryTitle": category->title\n    },\n    "shops": *[_type == "shop"] | order(order asc){\n      name, address, phone, email, hours, mapsUrl\n    },\n    "reviews": *[_type == "googleReview"] | order(_createdAt desc)[0...6]{\n      _id, author, rating, text\n    }\n  }': HOME_QUERY_RESULT;
     '*[_type == "aboutPage"][0]{title, intro, story, image}': ABOUT_QUERY_RESULT;
     '*[_type == "category" && slug.current == $slug][0]{\n    title, description, image,\n    "products": *[_type == "product" && category._ref == ^._id]\n      | order(featured desc, title asc){\n        title, "slug": slug.current, description, images\n    }\n  }': CATEGORY_QUERY_RESULT;
     '*[_type == "category" && defined(slug.current)]{"slug": slug.current}': CATEGORY_SLUGS_QUERY_RESULT;
     '*[_type == "product" && slug.current == $slug][0]{\n    title, description, images,\n    "category": category->{title, "slug": slug.current}\n  }': PRODUCT_QUERY_RESULT;
     '*[_type == "product" && defined(slug.current)]{"slug": slug.current}': PRODUCT_SLUGS_QUERY_RESULT;
-    '*[_type == "shop"] | order(order asc){name, address, phone, hours, image}': SHOPS_QUERY_RESULT;
+    '*[_type == "shop"] | order(order asc){name, address, phone, email, hours, mapsUrl, image}': SHOPS_QUERY_RESULT;
   }
 }

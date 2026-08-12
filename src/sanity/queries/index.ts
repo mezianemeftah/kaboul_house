@@ -7,8 +7,20 @@ export const SETTINGS_QUERY = defineQuery(
 export const HOME_QUERY = defineQuery(
   `*[_type == "homePage"][0]{
     heroTitle, heroSubtitle, heroImage,
+    aboutTitle, aboutText,
     "categories": *[_type == "category"] | order(order asc){
       title, "slug": slug.current, description, image
+    },
+    "featuredProducts": *[_type == "product" && featured == true]
+      | order(_updatedAt desc)[0...5]{
+        title, "slug": slug.current, images,
+        "categoryTitle": category->title
+    },
+    "shops": *[_type == "shop"] | order(order asc){
+      name, address, phone, email, hours, mapsUrl
+    },
+    "reviews": *[_type == "googleReview"] | order(_createdAt desc)[0...6]{
+      _id, author, rating, text
     }
   }`,
 );
@@ -43,5 +55,5 @@ export const PRODUCT_SLUGS_QUERY = defineQuery(
 );
 
 export const SHOPS_QUERY = defineQuery(
-  `*[_type == "shop"] | order(order asc){name, address, phone, hours, image}`,
+  `*[_type == "shop"] | order(order asc){name, address, phone, email, hours, mapsUrl, image}`,
 );

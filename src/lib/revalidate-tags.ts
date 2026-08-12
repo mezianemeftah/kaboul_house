@@ -5,6 +5,7 @@ const TAGS: Record<string, string[]> = {
   category: ["category"],
   product: ["product"],
   shop: ["shop"],
+  googleReview: ["googleReview"],
 };
 
 export function tagsForType(type: string): string[] {
