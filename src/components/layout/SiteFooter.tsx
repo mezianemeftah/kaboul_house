@@ -1,12 +1,23 @@
 import Link from "next/link";
+import { FooterBackdrop } from "@/components/layout/FooterBackdrop";
+import { RugDivider } from "@/components/layout/RugDivider";
 import { Pill } from "@/components/ui/Pill";
 import { whatsappUrl } from "@/lib/whatsapp";
 import type { SETTINGS_QUERY_RESULT } from "@/sanity/types";
 
+/**
+ * Pied de page en pleine hauteur (60 % de l'écran au minimum), sur photo.
+ *
+ * La réserve de 200 px en haut accueille le tapis volant, remonté à cheval sur
+ * la section précédente. Le pied de page ne coupe donc pas ce qui déborde :
+ * seul le fond photo est borné, par son propre conteneur.
+ */
 export function SiteFooter({ settings }: { settings: SETTINGS_QUERY_RESULT | null }) {
   return (
-    <footer className="bg-petrole px-sp-4 py-sp-6 text-blush md:px-sp-5">
-      <div className="mx-auto flex max-w-6xl flex-col gap-sp-5 md:flex-row md:items-start md:justify-between">
+    <footer className="relative flex min-h-[60svh] flex-col justify-end bg-petrole px-sp-4 pb-sp-6 pt-[200px] text-blush md:px-sp-5">
+      <FooterBackdrop />
+      <RugDivider />
+      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-sp-5 md:flex-row md:items-start md:justify-between">
         <div>
           <p className="font-bonny text-3xl font-bold">Kaboul House</p>
           <p className="mt-sp-2 max-w-sm font-light opacity-80">
@@ -37,7 +48,7 @@ export function SiteFooter({ settings }: { settings: SETTINGS_QUERY_RESULT | nul
           </div>
         </div>
       </div>
-      <p className="mx-auto mt-sp-6 max-w-6xl text-sm font-light opacity-60">
+      <p className="relative z-10 mx-auto mt-sp-6 w-full max-w-6xl text-sm font-light opacity-60">
         © {new Date().getFullYear()} Kaboul House — Grenoble · Lyon
       </p>
     </footer>

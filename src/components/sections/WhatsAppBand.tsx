@@ -1,15 +1,13 @@
 "use client";
 
 import { cubicBezier, motion, useScroll, useTransform } from "motion/react";
-import { useRef, useSyncExternalStore } from "react";
+import { useRef } from "react";
 import { Pill } from "@/components/ui/Pill";
+import { useHydrated } from "@/lib/use-hydrated";
 import { AmbianceVideo } from "./AmbianceVideo";
 
 /** Sortie douce : la vidéo prend vite sa taille, puis se pose. */
 const EASE = cubicBezier(0.33, 1, 0.68, 1);
-
-/** L'état ne change jamais : seul l'écart serveur/client nous intéresse. */
-const subscribeNever = () => () => {};
 
 /**
  * Section WhatsApp plein écran, en recouvrement.
@@ -35,9 +33,7 @@ const subscribeNever = () => () => {};
 export function WhatsAppBand({ whatsappHref }: { whatsappHref: string }) {
   const ref = useRef<HTMLElement>(null);
 
-  // Le rendu serveur ignore l'échelle : on ne l'applique qu'une fois hydraté,
-  // sinon le premier rendu client diffère du HTML servi (erreur d'hydratation).
-  const animate = useSyncExternalStore(subscribeNever, () => true, () => false);
+  const animate = useHydrated();
 
   // De « le haut de la section touche le bas de l'écran » à « il touche le haut ».
   const { scrollYProgress } = useScroll({
