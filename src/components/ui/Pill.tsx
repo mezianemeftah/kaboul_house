@@ -1,7 +1,21 @@
 import Link from "next/link";
 
-const PILL_CLASSES =
-  "group inline-flex items-center gap-sp-2 rounded-pill border border-grenat/30 bg-creme px-sp-4 py-sp-2 font-bold text-grenat transition-colors hover:bg-blush";
+/** Gabarit commun aux deux variantes : forme, rythme interne, transition. */
+const PILL_BASE =
+  "group inline-flex items-center gap-sp-2 rounded-pill border px-sp-4 py-sp-2 transition-colors";
+
+/** Variante par défaut — crème sur fond clair, utilisée partout hors navigation. */
+const PILL_SOLID = "border-grenat/30 bg-creme font-bold text-grenat hover:bg-blush";
+
+/** Variante contour — posée sur le verre fumé de la navigation, sans aplat. */
+const PILL_OUTLINE =
+  "border-white/40 bg-transparent font-normal text-white hover:border-white/70 hover:bg-white/10";
+
+export type PillVariant = "solid" | "outline";
+
+function pillClasses(variant: PillVariant): string {
+  return `${PILL_BASE} ${variant === "outline" ? PILL_OUTLINE : PILL_SOLID}`;
+}
 
 function Star() {
   return (
@@ -22,10 +36,12 @@ function Star() {
 export function Pill({
   href,
   onClick,
+  variant = "solid",
   children,
 }: {
   href: string;
   onClick?: () => void;
+  variant?: PillVariant;
   children: React.ReactNode;
 }) {
   const external = href.startsWith("http");
@@ -34,7 +50,7 @@ export function Pill({
       href={href}
       onClick={onClick}
       {...(external && { target: "_blank", rel: "noopener noreferrer" })}
-      className={PILL_CLASSES}
+      className={pillClasses(variant)}
     >
       <Star />
       {children}
@@ -50,7 +66,7 @@ export function PillButton({
   children: React.ReactNode;
 }) {
   return (
-    <button type="button" onClick={onClick} className={PILL_CLASSES}>
+    <button type="button" onClick={onClick} className={pillClasses("solid")}>
       <Star />
       {children}
     </button>

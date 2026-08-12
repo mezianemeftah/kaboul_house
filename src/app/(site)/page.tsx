@@ -25,7 +25,6 @@ export default async function HomePage() {
         title={home?.heroTitle ?? null}
         subtitle={home?.heroSubtitle ?? null}
         image={home?.heroImage ?? null}
-        whatsappHref={wa}
       />
       <CategoryGrid categories={home?.categories} />
       <WhatsAppBand whatsappHref={wa} />

@@ -14,43 +14,62 @@ type Card = {
   alt: string;
 };
 
+/**
+ * Photos éditoriales de repli, indexées par slug. Elles habillent les cartes
+ * tant qu'aucune image n'est renseignée dans Sanity ; dès qu'une catégorie
+ * reçoit la sienne, `imageUrl` reprend la main.
+ */
+const FALLBACK_IMAGES: Record<string, { imageSrc: string; alt: string }> = {
+  tapis: {
+    imageSrc: "/images/category-sea.webp",
+    alt: "Tapis rouge porté au-dessus de l'eau",
+  },
+  decoration: {
+    imageSrc: "/images/category-night.webp",
+    alt: "Tapis d'Orient dans une cour au crépuscule",
+  },
+  "fruits-secs": {
+    imageSrc: "/images/category-prayer.webp",
+    alt: "Silhouettes sur un tapis au lever du soleil",
+  },
+};
+
 const FALLBACK: Card[] = [
   {
     slug: "tapis",
     title: "Tapis",
     description:
       "Khal Mohammadi, Boukhara, kilims — des pièces nouées main, choisies une à une à Kaboul, Téhéran et Istanbul.",
-    src: null,
-    alt: "",
   },
   {
     slug: "decoration",
     title: "Décoration",
     description:
       "Toshak, coussins suzani, cuivres martelés et céramiques — l'art de recevoir à l'orientale.",
-    src: null,
-    alt: "",
   },
   {
     slug: "fruits-secs",
     title: "Fruits secs",
     description:
       "Amandes, pistaches de Kandahar, mûres blanches et abricots sauvages — le goût des montagnes afghanes.",
-    src: null,
-    alt: "",
   },
-];
+].map((c) => ({
+  ...c,
+  src: FALLBACK_IMAGES[c.slug].imageSrc,
+  alt: FALLBACK_IMAGES[c.slug].alt,
+}));
 
 function toCards(categories: Category[] | null | undefined): Card[] {
   const cards: Card[] = [];
   for (const c of categories ?? []) {
     if (!c.slug || !c.title) continue;
+    const fallbackImage = FALLBACK_IMAGES[c.slug];
     cards.push({
       slug: c.slug,
       title: c.title,
       description: c.description,
-      src: imageUrl(c.image, 800),
-      alt: c.image?.alt ?? "",
+      src: imageUrl(c.image, 800) ?? fallbackImage?.imageSrc ?? null,
+      alt: c.image?.alt ?? fallbackImage?.alt ?? "",
     });
   }
   return cards.length > 0 ? cards : FALLBACK;

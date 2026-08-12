@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { FALLBACK_PRODUCTS, PLACEHOLDER_GRADIENTS } from "@/lib/fallback-content";
 import { imageUrl } from "@/sanity/lib/image";
 import type { HOME_QUERY_RESULT } from "@/sanity/types";
 
@@ -15,22 +16,12 @@ type Item = {
   alt: string;
 };
 
-const FALLBACK: Item[] = [
-  { key: "tapis-khal", title: "Tapis Khal Mohammadi", categoryTitle: "Tapis" },
-  { key: "toshak", title: "Toshak brodé main", categoryTitle: "Décoration" },
-  { key: "plateau", title: "Plateau en cuivre martelé", categoryTitle: "Décoration" },
-  { key: "pistaches", title: "Pistaches de Kandahar", categoryTitle: "Fruits secs" },
-  { key: "coussin", title: "Coussin suzani", categoryTitle: "Décoration" },
-].map((i) => ({ ...i, slug: null, src: null, alt: "" }));
-
-/** Dégradés du placeholder — variés pour que les 5 cartes ne soient pas jumelles. */
-const GRADIENTS = [
-  "bg-gradient-to-br from-grenat to-petrole",
-  "bg-gradient-to-tr from-petrole to-grenat-vif",
-  "bg-gradient-to-b from-grenat-vif to-grenat-profond",
-  "bg-gradient-to-bl from-petrole-clair to-petrole",
-  "bg-gradient-to-tl from-grenat-profond to-petrole",
-];
+const FALLBACK: Item[] = FALLBACK_PRODUCTS.map((i) => ({
+  ...i,
+  slug: null,
+  src: null,
+  alt: "",
+}));
 
 /** Placement bento (md+) : la première pièce occupe un carré 2×2, les autres 1×1. */
 const PLACEMENT = [
@@ -73,7 +64,7 @@ function Card({ item, index }: { item: Item; index: number }) {
       ) : (
         <div
           className={`absolute inset-0 transition-transform duration-500 group-hover:scale-[1.04] ${
-            GRADIENTS[index % GRADIENTS.length]
+            PLACEHOLDER_GRADIENTS[index % PLACEHOLDER_GRADIENTS.length]
           }`}
           style={{ transitionTimingFunction: "var(--ease-signature)" }}
           aria-hidden

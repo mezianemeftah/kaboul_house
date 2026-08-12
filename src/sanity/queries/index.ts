@@ -50,6 +50,10 @@ export const PRODUCT_QUERY = defineQuery(
   }`,
 );
 
+export const ALL_PRODUCTS_QUERY = defineQuery(
+  `*[_type == "product"] | order(title asc){title, "slug": slug.current, images, "categoryTitle": category->title}`,
+);
+
 export const PRODUCT_SLUGS_QUERY = defineQuery(
   `*[_type == "product" && defined(slug.current)]{"slug": slug.current}`,
 );

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { SiteHeader } from "@/components/layout/SiteHeader";
+import { Pill } from "@/components/ui/Pill";
 import { imageUrl } from "@/sanity/lib/image";
 import type { HOME_QUERY_RESULT } from "@/sanity/types";
 import { HeroSubtitle, HeroTitle } from "./HeroTitle";
@@ -15,12 +15,10 @@ export function HomeHero({
   title,
   subtitle,
   image,
-  whatsappHref,
 }: {
   title: string | null;
   subtitle: string | null;
   image: Home["heroImage"];
-  whatsappHref: string;
 }) {
   const src = imageUrl(image, 2400) ?? FALLBACK_IMAGE;
 
@@ -40,11 +38,12 @@ export function HomeHero({
           aria-hidden
         />
 
-        <SiteHeader whatsappHref={whatsappHref} variant="overlay" />
-
         <div className="absolute inset-0 flex flex-col items-center justify-center px-sp-4 text-center text-white">
           <HeroTitle title={title ?? FALLBACK_TITLE} />
           <HeroSubtitle>{subtitle ?? FALLBACK_SUBTITLE}</HeroSubtitle>
+          <div className="mt-sp-5">
+            <Pill href="/boutique">Découvrir la boutique</Pill>
+          </div>
         </div>
       </div>
     </section>
