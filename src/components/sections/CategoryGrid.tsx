@@ -8,6 +8,7 @@ type Category = NonNullable<HOME_QUERY_RESULT>["categories"][number];
 
 type Card = {
   slug: string;
+  kicker: string | null;
   title: string;
   description: string | null;
   src: string | null;
@@ -16,15 +17,19 @@ type Card = {
 
 /**
  * Photos éditoriales de repli, indexées par slug. Elles habillent les cartes
- * tant qu'aucune image n'est renseignée dans Sanity ; dès qu'une catégorie
- * reçoit la sienne, `imageUrl` reprend la main.
+ * tant qu'aucune image n'est renseignée dans Sanity ; dès qu'un univers reçoit
+ * la sienne, `imageUrl` reprend la main.
+ *
+ * Trois photos seulement pour cinq univers : les deux cartes restantes tombent
+ * sur la tuile en dégradé (voir plus bas). Répéter une même photo à l'écran se
+ * verrait davantage que cette alternance, qui se lit comme un parti pris.
  */
 const FALLBACK_IMAGES: Record<string, { imageSrc: string; alt: string }> = {
   tapis: {
     imageSrc: "/images/category-sea.webp",
     alt: "Tapis rouge porté au-dessus de l'eau",
   },
-  decoration: {
+  textiles: {
     imageSrc: "/images/category-night.webp",
     alt: "Tapis d'Orient dans une cour au crépuscule",
   },
@@ -37,27 +42,57 @@ const FALLBACK_IMAGES: Record<string, { imageSrc: string; alt: string }> = {
 const FALLBACK: Card[] = [
   {
     slug: "tapis",
-    title: "Tapis",
-    description:
-      "Khal Mohammadi, Boukhara, kilims — des pièces nouées main, choisies une à une à Kaboul, Téhéran et Istanbul.",
+    kicker: "Sol",
+    title: "Tapis & Qali",
+    description: "Du noué main afghan aux grands formats turcs et persans.",
   },
   {
-    slug: "decoration",
-    title: "Décoration",
-    description:
-      "Toshak, coussins suzani, cuivres martelés et céramiques — l'art de recevoir à l'orientale.",
+    slug: "toshak",
+    kicker: "Assise",
+    title: "Toshak & Majlis",
+    description: "L'assise afghane traditionnelle : kabuli, 2 ou 3 baleshta.",
+  },
+  {
+    slug: "textiles",
+    kicker: "Intérieur",
+    title: "Textiles & Décor",
+    description: "Sarqalini, rojayi, balesht — pour habiller chaque pièce.",
+  },
+  {
+    slug: "art-de-la-table",
+    kicker: "Table",
+    title: "Art de la Table",
+    description: "Services dorés, plateaux, thermos. L'hospitalité dressée.",
   },
   {
     slug: "fruits-secs",
-    title: "Fruits secs",
-    description:
-      "Amandes, pistaches de Kandahar, mûres blanches et abricots sauvages — le goût des montagnes afghanes.",
+    kicker: "Saveurs",
+    title: "Fruits Secs d'Afghanistan",
+    description: "Amandes, pistaches, mûres — bio, et prêts à offrir.",
   },
 ].map((c) => ({
   ...c,
-  src: FALLBACK_IMAGES[c.slug].imageSrc,
-  alt: FALLBACK_IMAGES[c.slug].alt,
+  src: FALLBACK_IMAGES[c.slug]?.imageSrc ?? null,
+  alt: FALLBACK_IMAGES[c.slug]?.alt ?? "",
 }));
+
+/**
+ * Place de chaque carte dans le bento : deux larges en haut, trois en dessous.
+ *
+ * Sur six colonnes, aucune cellule ne descend sous deux colonnes — un premier
+ * essai en 2×2 serrait trop le surtitre, le titre, la description et le lien
+ * dans une même case. Au-delà de cinq univers, les suivants reprennent la
+ * largeur des cartes du bas.
+ */
+const BENTO_SPANS = [
+  "sm:col-span-2 lg:col-span-3",
+  "sm:col-span-2 lg:col-span-3",
+  "lg:col-span-2",
+  "lg:col-span-2",
+  "sm:col-span-2 lg:col-span-2",
+];
+
+const DEFAULT_SPAN = "lg:col-span-2";
 
 function toCards(categories: Category[] | null | undefined): Card[] {
   const cards: Card[] = [];
@@ -66,14 +101,18 @@ function toCards(categories: Category[] | null | undefined): Card[] {
     const fallbackImage = FALLBACK_IMAGES[c.slug];
     cards.push({
       slug: c.slug,
+      kicker: c.kicker ?? null,
       title: c.title,
       description: c.description,
-      src: imageUrl(c.image, 800) ?? fallbackImage?.imageSrc ?? null,
+      src: imageUrl(c.image, 1200) ?? fallbackImage?.imageSrc ?? null,
       alt: c.image?.alt ?? fallbackImage?.alt ?? "",
     });
   }
   return cards.length > 0 ? cards : FALLBACK;
 }
+
+/** « 01 », « 02 »… d'après la place dans la grille. */
+const numero = (index: number) => String(index + 1).padStart(2, "0");
 
 export function CategoryGrid({ categories }: { categories: Category[] | null | undefined }) {
   const cards = toCards(categories);
@@ -85,47 +124,73 @@ export function CategoryGrid({ categories }: { categories: Category[] | null | u
           <SectionLabel>Nos univers</SectionLabel>
         </div>
         <h2 className="mt-sp-3 max-w-2xl font-bonny text-4xl font-bold leading-[1.05] text-encre md:text-5xl">
-          Trois mondes à explorer
+          Cinq mondes, une même maison
         </h2>
+        <p className="mt-sp-4 max-w-2xl font-light leading-relaxed text-encre-douce">
+          Du tapis sous vos pieds à l&apos;assiette de votre invité, chaque pièce raconte
+          l&apos;hospitalité orientale. Choisissez par où commencer.
+        </p>
 
-        <div className="mt-sp-5 grid gap-sp-3 sm:grid-cols-2 md:mt-sp-6 lg:grid-cols-3">
-          {cards.map((card) => (
+        <div className="mt-sp-5 grid auto-rows-[20rem] gap-sp-3 sm:grid-cols-2 md:mt-sp-6 lg:auto-rows-[23rem] lg:grid-cols-6">
+          {cards.map((card, i) => (
             <Link
               key={card.slug}
               href={`/${card.slug}`}
-              className="group overflow-hidden rounded-panel bg-blush-2 transition-shadow duration-500 hover:shadow-lg hover:shadow-grenat/10"
-              style={{ transitionTimingFunction: "var(--ease-signature)" }}
+              className={`group relative overflow-hidden rounded-panel bg-encre ${BENTO_SPANS[i] ?? DEFAULT_SPAN}`}
             >
-              <div className="relative aspect-[4/3] overflow-hidden">
-                {card.src ? (
-                  <Image
-                    src={card.src}
-                    alt={card.alt}
-                    fill
-                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                    style={{ transitionTimingFunction: "var(--ease-signature)" }}
-                  />
-                ) : (
-                  <div
-                    className="flex h-full w-full items-center justify-center bg-gradient-to-br from-grenat to-petrole transition-transform duration-500 group-hover:scale-[1.04]"
-                    style={{ transitionTimingFunction: "var(--ease-signature)" }}
-                    aria-hidden
-                  >
-                    <span className="font-bonny text-7xl font-thin text-creme/30">
-                      {card.title.charAt(0)}
-                    </span>
-                  </div>
-                )}
-              </div>
+              {card.src ? (
+                <Image
+                  src={card.src}
+                  alt={card.alt}
+                  fill
+                  sizes="(min-width: 1024px) 50vw, (min-width: 640px) 50vw, 100vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                  style={{ transitionTimingFunction: "var(--ease-signature)" }}
+                />
+              ) : (
+                <div
+                  className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-grenat via-grenat-profond to-petrole transition-transform duration-700 group-hover:scale-[1.05]"
+                  style={{ transitionTimingFunction: "var(--ease-signature)" }}
+                  aria-hidden
+                >
+                  <span className="font-bonny text-[7rem] font-thin leading-none text-creme/15">
+                    {numero(i)}
+                  </span>
+                </div>
+              )}
 
-              <div className="p-sp-4">
-                <h3 className="font-bonny text-2xl font-medium text-encre">{card.title}</h3>
-                {card.description && (
-                  <p className="mt-sp-2 font-light leading-relaxed text-encre-douce">
-                    {card.description}
-                  </p>
-                )}
+              {/* Voile du bas : garde le texte lisible quelle que soit la photo. */}
+              <div
+                className="absolute inset-0 bg-gradient-to-t from-encre/85 via-encre/25 to-transparent"
+                aria-hidden
+              />
+
+              <div className="relative flex h-full flex-col justify-between p-sp-5 text-blush">
+                <p className="font-light tracking-wide opacity-80">
+                  {numero(i)}
+                  {card.kicker ? ` — ${card.kicker}` : ""}
+                </p>
+
+                <div>
+                  <h3 className="font-bonny text-3xl font-medium leading-tight md:text-4xl">
+                    {card.title}
+                  </h3>
+                  {card.description && (
+                    <p className="mt-sp-3 max-w-md font-light leading-relaxed opacity-85">
+                      {card.description}
+                    </p>
+                  )}
+                  <span className="mt-sp-4 inline-flex items-center gap-sp-2 font-light">
+                    Voir
+                    <span
+                      className="transition-transform duration-300 group-hover:translate-x-1"
+                      style={{ transitionTimingFunction: "var(--ease-signature)" }}
+                      aria-hidden
+                    >
+                      →
+                    </span>
+                  </span>
+                </div>
               </div>
             </Link>
           ))}

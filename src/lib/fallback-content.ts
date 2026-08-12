@@ -12,11 +12,11 @@ export type FallbackProduct = {
 };
 
 export const FALLBACK_PRODUCTS: FallbackProduct[] = [
-  { key: "tapis-khal", title: "Tapis Khal Mohammadi", categoryTitle: "Tapis" },
-  { key: "toshak", title: "Toshak brodé main", categoryTitle: "Décoration" },
-  { key: "plateau", title: "Plateau en cuivre martelé", categoryTitle: "Décoration" },
-  { key: "pistaches", title: "Pistaches de Kandahar", categoryTitle: "Fruits secs" },
-  { key: "coussin", title: "Coussin suzani", categoryTitle: "Décoration" },
+  { key: "tapis-khal", title: "Tapis Khal Mohammadi", categoryTitle: "Tapis & Qali" },
+  { key: "toshak", title: "Toshak kabuli brodé main", categoryTitle: "Toshak & Majlis" },
+  { key: "plateau", title: "Plateau en cuivre martelé", categoryTitle: "Art de la Table" },
+  { key: "pistaches", title: "Pistaches de Kandahar", categoryTitle: "Fruits Secs d'Afghanistan" },
+  { key: "balesht", title: "Balesht brodé", categoryTitle: "Textiles & Décor" },
 ];
 
 /** Dégradés de placeholder — variés pour que les cartes ne soient pas jumelles. */

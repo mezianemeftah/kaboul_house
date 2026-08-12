@@ -9,7 +9,7 @@ export const HOME_QUERY = defineQuery(
     heroTitle, heroSubtitle, heroImage,
     aboutTitle, aboutText,
     "categories": *[_type == "category"] | order(order asc){
-      title, "slug": slug.current, description, image
+      title, "slug": slug.current, kicker, description, image
     },
     "featuredProducts": *[_type == "product" && featured == true]
       | order(_updatedAt desc)[0...5]{

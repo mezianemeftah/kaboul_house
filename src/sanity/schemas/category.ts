@@ -20,6 +20,13 @@ export const category = defineType({
       options: { source: "title" },
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: "kicker",
+      title: "Thème (surtitre)",
+      description:
+        "Un mot affiché au-dessus du nom, après le numéro : « Sol », « Assise », « Table »… Le numéro est calculé automatiquement selon l'ordre d'affichage.",
+      type: "string",
+    }),
     defineField({ name: "description", title: "Description", type: "text", rows: 3 }),
     defineField({
       name: "image",

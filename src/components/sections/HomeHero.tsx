@@ -6,9 +6,9 @@ import { HeroSubtitle, HeroTitle } from "./HeroTitle";
 
 type Home = NonNullable<HOME_QUERY_RESULT>;
 
-const FALLBACK_TITLE = "Trois univers, une même grande maison.";
+const FALLBACK_TITLE = "L'Orient entre sous votre toit.";
 const FALLBACK_SUBTITLE =
-  "Tapis noués main, décoration choisie et fruits secs d'Orient — de Kaboul jusqu'au cœur de Grenoble et de Lyon.";
+  "Tapis noués main, toshak, textiles, art de la table et fruits secs — de Kaboul jusqu'au cœur de Grenoble et de Lyon.";
 const FALLBACK_IMAGE = "/images/hero-intro.webp";
 
 export function HomeHero({
