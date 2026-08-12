@@ -36,9 +36,13 @@ export function RugDivider() {
   const rotate = useTransform(scrollYProgress, [0, 1], [1.5, -1.5], { ease: EASE });
 
   return (
+    // `overflow-x-clip` : la bascule élargit la boîte de l'image de quelques
+    // pixels et ouvrait une barre de défilement horizontale. Contrairement à
+    // `hidden`, `clip` sur un seul axe laisse l'autre déborder — le tapis peut
+    // donc toujours remonter au-dessus du pied de page.
     <div
       ref={ref}
-      className="pointer-events-none absolute inset-x-0 top-0 z-10 -translate-y-1/3"
+      className="pointer-events-none absolute inset-x-0 top-0 z-10 -translate-y-1/3 overflow-x-clip"
       aria-hidden
     >
       <motion.div style={hydrated ? { y, rotate } : undefined}>

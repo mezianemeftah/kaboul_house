@@ -1,7 +1,7 @@
 import { AboutSection } from "@/components/sections/AboutSection";
 import { CategoryGrid } from "@/components/sections/CategoryGrid";
 import { ContactTabs } from "@/components/sections/ContactTabs";
-import { FeaturedBento } from "@/components/sections/FeaturedBento";
+import { FeaturedSlider } from "@/components/sections/FeaturedSlider";
 import { HomeHero } from "@/components/sections/HomeHero";
 import { ReviewsSection } from "@/components/sections/ReviewsSection";
 import { WhatsAppBand } from "@/components/sections/WhatsAppBand";
@@ -46,7 +46,7 @@ export default async function HomePage() {
         <WhatsAppBand whatsappHref={wa} />
       </div>
       <AboutSection title={home?.aboutTitle ?? null} text={home?.aboutText ?? null} />
-      <FeaturedBento products={home?.featuredProducts} />
+      <FeaturedSlider products={home?.featuredProducts} />
       <ContactTabs
         shops={home?.shops}
         fallbackPhone={settings?.phone ?? settings?.whatsapp ?? null}
