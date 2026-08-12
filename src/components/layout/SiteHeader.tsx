@@ -47,6 +47,7 @@ export function SiteHeader({
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
+          aria-controls="menu-mobile"
           aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
           className="col-start-3 justify-self-end min-[760px]:hidden"
         >
@@ -61,13 +62,18 @@ export function SiteHeader({
       </div>
 
       {open && (
-        <div className="mt-sp-3 flex flex-col items-start gap-sp-3 rounded-panel bg-encre/70 p-sp-4 backdrop-blur-md min-[760px]:hidden">
+        <div
+          id="menu-mobile"
+          className="mt-sp-3 flex flex-col items-start gap-sp-3 rounded-panel bg-encre/70 p-sp-4 backdrop-blur-md min-[760px]:hidden"
+        >
           {LINKS.map((l) => (
             <Link key={l.href} href={l.href} onClick={() => setOpen(false)} className="font-normal">
               {l.label}
             </Link>
           ))}
-          <Pill href={whatsappHref}>Nous écrire</Pill>
+          <Pill href={whatsappHref} onClick={() => setOpen(false)}>
+            Nous écrire
+          </Pill>
         </div>
       )}
     </header>

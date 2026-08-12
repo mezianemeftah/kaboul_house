@@ -1,5 +1,8 @@
 import Link from "next/link";
 
+const PILL_CLASSES =
+  "group inline-flex items-center gap-sp-2 rounded-pill border border-grenat/30 bg-creme px-sp-4 py-sp-2 font-bold text-grenat transition-colors hover:bg-blush";
+
 function Star() {
   return (
     <svg
@@ -16,16 +19,40 @@ function Star() {
   );
 }
 
-export function Pill({ href, children }: { href: string; children: React.ReactNode }) {
+export function Pill({
+  href,
+  onClick,
+  children,
+}: {
+  href: string;
+  onClick?: () => void;
+  children: React.ReactNode;
+}) {
   const external = href.startsWith("http");
   return (
     <Link
       href={href}
+      onClick={onClick}
       {...(external && { target: "_blank", rel: "noopener noreferrer" })}
-      className="group inline-flex items-center gap-sp-2 rounded-pill border border-grenat/30 bg-creme px-sp-4 py-sp-2 font-bold text-grenat transition-colors hover:bg-blush"
+      className={PILL_CLASSES}
     >
       <Star />
       {children}
     </Link>
+  );
+}
+
+export function PillButton({
+  onClick,
+  children,
+}: {
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button type="button" onClick={onClick} className={PILL_CLASSES}>
+      <Star />
+      {children}
+    </button>
   );
 }
