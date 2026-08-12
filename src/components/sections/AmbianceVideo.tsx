@@ -1,57 +1,74 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const POSTER = "/images/category-prayer.webp";
 
 /**
- * Fond de la section WhatsApp. La vidéo n'est montée — donc téléchargée et
- * jouée — que si l'utilisateur n'a pas demandé à réduire les animations ;
- * sinon la photo fixe tient le rôle d'affiche. Le rendu serveur part de
- * l'affiche, l'hypothèse la plus prudente.
+ * Fond vidéo de la section WhatsApp.
  *
- * `preload="auto"` : le fichier fait ~17 Mo et la section arrive tôt dans la
- * page ; avec `metadata`, le premier écran restait sur l'affiche le temps du
- * tampon — c'est l'image fixe que le client avait vue. Un appel explicite à
- * `play()` rattrape par ailleurs les navigateurs qui ignorent `autoPlay` au
- * montage (le muet est requis pour que la politique d'autoplay l'accepte).
+ * La vidéo est toujours montée et jouée : c'est un décor muet en boucle, pas
+ * une animation d'interface. L'accessibilité passe ici par le bouton pause
+ * (WCAG 2.2.2 : tout média qui démarre seul au-delà de 5 s doit pouvoir être
+ * arrêté), et non par la suppression du média — une version antérieure la
+ * remplaçait par une photo dès que le système demandait des animations
+ * réduites, si bien qu'une partie des visiteurs ne voyait jamais la vidéo.
+ *
+ * `poster` couvre le temps de mise en tampon ; `playsInline` évite le passage
+ * en plein écran sur iOS ; `muted` est requis pour que la lecture automatique
+ * soit acceptée par les navigateurs.
  */
 export function AmbianceVideo() {
-  const [motionAllowed, setMotionAllowed] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(true);
 
   useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setMotionAllowed(!query.matches);
-    sync();
-    query.addEventListener("change", sync);
-    return () => query.removeEventListener("change", sync);
+    videoRef.current?.play().catch(() => {
+      // Lecture automatique refusée : l'affiche reste, le bouton prend le relais.
+      setPlaying(false);
+    });
   }, []);
 
-  useEffect(() => {
-    if (!motionAllowed) return;
-    videoRef.current?.play().catch(() => {
-      /* politique d'autoplay : l'affiche reste, c'est un repli acceptable */
-    });
-  }, [motionAllowed]);
-
-  if (!motionAllowed) {
-    return <Image src={POSTER} alt="" fill sizes="100vw" className="object-cover" aria-hidden />;
-  }
+  const toggle = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      void video.play();
+      setPlaying(true);
+    } else {
+      video.pause();
+      setPlaying(false);
+    }
+  };
 
   return (
-    <video
-      ref={videoRef}
-      className="h-full w-full object-cover"
-      src="/videos/ambiance.mp4"
-      poster={POSTER}
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="auto"
-      aria-hidden
-    />
+    <>
+      <video
+        ref={videoRef}
+        className="h-full w-full object-cover"
+        src="/videos/ambiance.mp4"
+        poster={POSTER}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden
+      />
+      <button
+        type="button"
+        onClick={toggle}
+        aria-label={playing ? "Mettre la vidéo en pause" : "Lancer la vidéo"}
+        className="absolute bottom-sp-4 right-sp-4 z-20 rounded-pill border border-white/40 p-sp-2 text-white transition-colors hover:border-white/70 hover:bg-white/10"
+      >
+        <svg viewBox="0 0 16 16" className="size-3.5" fill="currentColor" aria-hidden>
+          {playing ? (
+            <path d="M4 2.5h3v11H4zM9 2.5h3v11H9z" />
+          ) : (
+            <path d="M4.5 2.4 13 8l-8.5 5.6z" />
+          )}
+        </svg>
+      </button>
+    </>
   );
 }

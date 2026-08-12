@@ -1,6 +1,6 @@
 "use client";
 
-import { cubicBezier, motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { cubicBezier, motion, useScroll, useTransform } from "motion/react";
 import { useRef, useSyncExternalStore } from "react";
 import { Pill } from "@/components/ui/Pill";
 import { AmbianceVideo } from "./AmbianceVideo";
@@ -27,15 +27,17 @@ const subscribeNever = () => () => {};
  *
  * Aucun `fixed` n'est en jeu : l'effet reste exact sous Lenis, qui pilote le
  * défilement natif — `useScroll` lit donc des valeurs justes.
+ *
+ * L'échelle n'est pas coupée par `prefers-reduced-motion` : elle suit le geste
+ * de défilement au lieu de se déclencher seule, et le seul mouvement autonome
+ * de la section — la vidéo — dispose de son bouton pause.
  */
 export function WhatsAppBand({ whatsappHref }: { whatsappHref: string }) {
   const ref = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
 
   // Le rendu serveur ignore l'échelle : on ne l'applique qu'une fois hydraté,
   // sinon le premier rendu client diffère du HTML servi (erreur d'hydratation).
-  const hydrated = useSyncExternalStore(subscribeNever, () => true, () => false);
-  const animate = hydrated && !reduceMotion;
+  const animate = useSyncExternalStore(subscribeNever, () => true, () => false);
 
   // De « le haut de la section touche le bas de l'écran » à « il touche le haut ».
   const { scrollYProgress } = useScroll({
