@@ -81,8 +81,10 @@ export function ContactTabs({
                 aria-selected={selected}
                 aria-controls="panneau-boutique"
                 onClick={() => setActive(i)}
-                className={`rounded-pill px-sp-4 py-sp-2 transition-colors ${
-                  selected ? "bg-petrole text-blush" : "bg-blush-2 text-encre hover:bg-creme"
+                className={`rounded-pill border bg-transparent px-sp-4 py-sp-2 transition-colors ${
+                  selected
+                    ? "border-grenat text-grenat"
+                    : "border-encre/20 text-encre-douce hover:border-encre/45 hover:text-encre"
                 }`}
                 style={{ transitionTimingFunction: "var(--ease-signature)" }}
               >

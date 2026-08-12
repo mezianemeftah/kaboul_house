@@ -19,7 +19,9 @@ export function SiteFooter({ settings }: { settings: SETTINGS_QUERY_RESULT | nul
           <Link href="/boutiques" className="opacity-85 transition-opacity hover:opacity-100">Nos boutiques</Link>
         </nav>
         <div className="flex flex-col items-start gap-sp-3">
-          <Pill href={whatsappUrl(settings?.whatsapp)}>Nous écrire sur WhatsApp</Pill>
+          <Pill href={whatsappUrl(settings?.whatsapp)} variant="onDark">
+            Nous écrire sur WhatsApp
+          </Pill>
           {settings?.phone && <p className="opacity-80">{settings.phone}</p>}
           <div className="flex gap-sp-3">
             {settings?.instagram && (

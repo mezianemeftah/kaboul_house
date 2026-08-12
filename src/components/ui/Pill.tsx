@@ -1,20 +1,26 @@
 import Link from "next/link";
 
-/** Gabarit commun aux deux variantes : forme, rythme interne, transition. */
+/**
+ * Gabarit commun à toutes les pastilles : forme, rythme interne, graisse et
+ * transition. Le style de référence est celui du bouton de navigation — pas
+ * d'aplat, un filet fin, une graisse normale. Seule la couleur change selon le
+ * fond qui porte le bouton.
+ */
 const PILL_BASE =
-  "group inline-flex items-center gap-sp-2 rounded-pill border px-sp-4 py-sp-2 transition-colors";
+  "group inline-flex items-center gap-sp-2 rounded-pill border bg-transparent px-sp-4 py-sp-2 font-normal transition-colors";
 
-/** Variante par défaut — crème sur fond clair, utilisée partout hors navigation. */
-const PILL_SOLID = "border-grenat/30 bg-creme font-bold text-grenat hover:bg-blush";
+/** Sur photo, vidéo, pétrole — bref, sur tout fond sombre. */
+const PILL_ON_DARK =
+  "border-white/40 text-white hover:border-white/70 hover:bg-white/10";
 
-/** Variante contour — posée sur le verre fumé de la navigation, sans aplat. */
-const PILL_OUTLINE =
-  "border-white/40 bg-transparent font-normal text-white hover:border-white/70 hover:bg-white/10";
+/** Sur blush, crème — bref, sur tout fond clair (grenat sur blush ≈ 7:1). */
+const PILL_ON_LIGHT =
+  "border-grenat/40 text-grenat hover:border-grenat/70 hover:bg-grenat/5";
 
-export type PillVariant = "solid" | "outline";
+export type PillVariant = "onDark" | "onLight";
 
 function pillClasses(variant: PillVariant): string {
-  return `${PILL_BASE} ${variant === "outline" ? PILL_OUTLINE : PILL_SOLID}`;
+  return `${PILL_BASE} ${variant === "onLight" ? PILL_ON_LIGHT : PILL_ON_DARK}`;
 }
 
 function Star() {
@@ -36,7 +42,7 @@ function Star() {
 export function Pill({
   href,
   onClick,
-  variant = "solid",
+  variant = "onDark",
   children,
 }: {
   href: string;
@@ -60,13 +66,15 @@ export function Pill({
 
 export function PillButton({
   onClick,
+  variant = "onDark",
   children,
 }: {
   onClick: () => void;
+  variant?: PillVariant;
   children: React.ReactNode;
 }) {
   return (
-    <button type="button" onClick={onClick} className={pillClasses("solid")}>
+    <button type="button" onClick={onClick} className={pillClasses(variant)}>
       <Star />
       {children}
     </button>

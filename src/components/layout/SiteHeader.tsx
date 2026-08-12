@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pill } from "@/components/ui/Pill";
 
 const LINKS = [
@@ -10,18 +10,42 @@ const LINKS = [
   { href: "/boutiques", label: "Nos boutiques" },
 ];
 
+/** Défilement au-delà duquel la carte de verre apparaît. */
+const SCROLL_THRESHOLD = 24;
+
 /**
- * Navigation flottante en verre fumé, fixée en haut de toutes les pages
- * (montée une seule fois dans `(site)/layout.tsx`). Détachée des bords par
- * une marge, elle laisse voir la photo du hero — puis le contenu — au travers.
+ * Navigation flottante, fixée en haut de toutes les pages (montée une seule
+ * fois dans `(site)/layout.tsx`).
+ *
+ * En haut de page elle n'est qu'un texte posé sur la photo du hero : aucun
+ * aplat, aucun filet, aucun flou. Dès le premier défilement, la carte de verre
+ * fumé se fond dedans. Les marges et le rembourrage sont identiques dans les
+ * deux états — seules la couleur de fond et celle du filet changent, donc rien
+ * ne bouge quand la carte apparaît.
  */
 export function SiteHeader({ whatsappHref }: { whatsappHref: string }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const sync = () => setScrolled(window.scrollY > SCROLL_THRESHOLD);
+    sync(); // position restaurée : l'état doit être juste dès le montage
+    window.addEventListener("scroll", sync, { passive: true });
+    return () => window.removeEventListener("scroll", sync);
+  }, []);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="mx-sp-3 mt-sp-3 md:mx-sp-5">
-        <div className="rounded-panel border border-white/10 bg-encre/35 px-sp-4 py-sp-2 text-white backdrop-blur-md">
+        <div
+          data-scrolled={scrolled}
+          className={`rounded-panel border px-sp-4 py-sp-2 text-white transition-[background-color,border-color,backdrop-filter] duration-300 ${
+            scrolled
+              ? "border-white/10 bg-encre/35 backdrop-blur-md"
+              : "border-transparent bg-transparent"
+          }`}
+          style={{ transitionTimingFunction: "var(--ease-signature)" }}
+        >
           <div className="grid grid-cols-[1fr_auto_1fr] items-center">
             <Link href="/" className="justify-self-start font-bonny text-2xl font-bold">
               Kaboul House
@@ -40,7 +64,7 @@ export function SiteHeader({ whatsappHref }: { whatsappHref: string }) {
             </nav>
 
             <div className="hidden justify-self-end min-[760px]:block">
-              <Pill href={whatsappHref} variant="outline">
+              <Pill href={whatsappHref} variant="onDark">
                 Nous écrire
               </Pill>
             </div>
@@ -86,7 +110,7 @@ export function SiteHeader({ whatsappHref }: { whatsappHref: string }) {
                 {l.label}
               </Link>
             ))}
-            <Pill href={whatsappHref} variant="outline" onClick={() => setOpen(false)}>
+            <Pill href={whatsappHref} variant="onDark" onClick={() => setOpen(false)}>
               Nous écrire
             </Pill>
           </div>

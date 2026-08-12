@@ -42,7 +42,9 @@ export function HomeHero({
           <HeroTitle title={title ?? FALLBACK_TITLE} />
           <HeroSubtitle>{subtitle ?? FALLBACK_SUBTITLE}</HeroSubtitle>
           <div className="mt-sp-5">
-            <Pill href="/boutique">Découvrir la boutique</Pill>
+            <Pill href="/boutique" variant="onDark">
+              Découvrir la boutique
+            </Pill>
           </div>
         </div>
       </div>
