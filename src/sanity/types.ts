@@ -45,6 +45,7 @@ export type Shop = {
   phone?: string;
   email?: string;
   mapsUrl?: string;
+  mapEmbed?: string;
   hours?: string;
   image?: {
     asset?: SanityImageAssetReference;
@@ -389,7 +390,7 @@ export type SETTINGS_QUERY_RESULT = {
 
 // Source: src/sanity/queries/index.ts
 // Variable: HOME_QUERY
-// Query: *[_type == "homePage"][0]{    heroTitle, heroSubtitle, heroImage, heroCtaLabel, heroCtaHref,    universKicker, universTitle, universIntro, universLinkLabel,    "videoUrl": videoFile.asset->url,    videoPoster, videoTitle, videoText, videoCtaLabel,    aboutKicker, aboutTitle, aboutText, aboutImageLarge, aboutImageSmall,    featuredKicker, featuredTitle,    "featuredProducts": featuredProducts[]->{      title, "slug": slug.current, images,      "categoryTitle": category->title    },    shopsKicker, shopsTitle, shopsEmptyText,    reviewsKicker, reviewsTitle, reviewsEmptyText, reviewsLinkLabel,    seoTitle, seoDescription,    "categories": *[_type == "category"] | order(order asc){      title, "slug": slug.current, kicker, description, image    },    "shops": *[_type == "shop"] | order(order asc){      name, address, phone, email, hours, mapsUrl    },    "reviews": *[_type == "googleReview"] | order(order asc)[0...6]{      _id, author, rating, text    }  }
+// Query: *[_type == "homePage"][0]{    heroTitle, heroSubtitle, heroImage, heroCtaLabel, heroCtaHref,    universKicker, universTitle, universIntro, universLinkLabel,    "videoUrl": videoFile.asset->url,    videoPoster, videoTitle, videoText, videoCtaLabel,    aboutKicker, aboutTitle, aboutText, aboutImageLarge, aboutImageSmall,    featuredKicker, featuredTitle,    "featuredProducts": featuredProducts[]->{      title, "slug": slug.current, images,      "categoryTitle": category->title    },    shopsKicker, shopsTitle, shopsEmptyText,    reviewsKicker, reviewsTitle, reviewsEmptyText, reviewsLinkLabel,    seoTitle, seoDescription,    "categories": *[_type == "category"] | order(order asc){      title, "slug": slug.current, kicker, description, image    },    "shops": *[_type == "shop"] | order(order asc){      name, address, phone, email, hours, mapsUrl, mapEmbed    },    "reviews": *[_type == "googleReview"] | order(order asc)[0...6]{      _id, author, rating, text    }  }
 export type HOME_QUERY_RESULT = {
   heroTitle: string | null;
   heroSubtitle: string | null;
@@ -484,6 +485,7 @@ export type HOME_QUERY_RESULT = {
     email: string | null;
     hours: string | null;
     mapsUrl: string | null;
+    mapEmbed: string | null;
   }>;
   reviews: Array<{
     _id: string;
@@ -602,7 +604,7 @@ export type PRODUCT_SLUGS_QUERY_RESULT = Array<{
 
 // Source: src/sanity/queries/index.ts
 // Variable: SHOPS_QUERY
-// Query: *[_type == "shop"] | order(order asc){name, address, phone, email, hours, mapsUrl, image}
+// Query: *[_type == "shop"] | order(order asc){name, address, phone, email, hours, mapsUrl, mapEmbed, image}
 export type SHOPS_QUERY_RESULT = Array<{
   name: string | null;
   address: string | null;
@@ -610,6 +612,7 @@ export type SHOPS_QUERY_RESULT = Array<{
   email: string | null;
   hours: string | null;
   mapsUrl: string | null;
+  mapEmbed: string | null;
   image: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -625,7 +628,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "siteSettings"][0]{whatsapp, phone, instagram, facebook, googleReviewsUrl, seoDescription, ogImage}': SETTINGS_QUERY_RESULT;
-    '*[_type == "homePage"][0]{\n    heroTitle, heroSubtitle, heroImage, heroCtaLabel, heroCtaHref,\n\n    universKicker, universTitle, universIntro, universLinkLabel,\n\n    "videoUrl": videoFile.asset->url,\n    videoPoster, videoTitle, videoText, videoCtaLabel,\n\n    aboutKicker, aboutTitle, aboutText, aboutImageLarge, aboutImageSmall,\n\n    featuredKicker, featuredTitle,\n    "featuredProducts": featuredProducts[]->{\n      title, "slug": slug.current, images,\n      "categoryTitle": category->title\n    },\n\n    shopsKicker, shopsTitle, shopsEmptyText,\n\n    reviewsKicker, reviewsTitle, reviewsEmptyText, reviewsLinkLabel,\n\n    seoTitle, seoDescription,\n\n    "categories": *[_type == "category"] | order(order asc){\n      title, "slug": slug.current, kicker, description, image\n    },\n    "shops": *[_type == "shop"] | order(order asc){\n      name, address, phone, email, hours, mapsUrl\n    },\n    "reviews": *[_type == "googleReview"] | order(order asc)[0...6]{\n      _id, author, rating, text\n    }\n  }': HOME_QUERY_RESULT;
+    '*[_type == "homePage"][0]{\n    heroTitle, heroSubtitle, heroImage, heroCtaLabel, heroCtaHref,\n\n    universKicker, universTitle, universIntro, universLinkLabel,\n\n    "videoUrl": videoFile.asset->url,\n    videoPoster, videoTitle, videoText, videoCtaLabel,\n\n    aboutKicker, aboutTitle, aboutText, aboutImageLarge, aboutImageSmall,\n\n    featuredKicker, featuredTitle,\n    "featuredProducts": featuredProducts[]->{\n      title, "slug": slug.current, images,\n      "categoryTitle": category->title\n    },\n\n    shopsKicker, shopsTitle, shopsEmptyText,\n\n    reviewsKicker, reviewsTitle, reviewsEmptyText, reviewsLinkLabel,\n\n    seoTitle, seoDescription,\n\n    "categories": *[_type == "category"] | order(order asc){\n      title, "slug": slug.current, kicker, description, image\n    },\n    "shops": *[_type == "shop"] | order(order asc){\n      name, address, phone, email, hours, mapsUrl, mapEmbed\n    },\n    "reviews": *[_type == "googleReview"] | order(order asc)[0...6]{\n      _id, author, rating, text\n    }\n  }': HOME_QUERY_RESULT;
     '*[_type == "homePage"][0]{seoTitle, seoDescription}': HOME_SEO_QUERY_RESULT;
     '*[_type == "category" && slug.current == $slug][0]{\n    title, description, image,\n    "products": *[_type == "product" && category._ref == ^._id]\n      | order(title asc){\n        title, "slug": slug.current, description, images\n    }\n  }': CATEGORY_QUERY_RESULT;
     '*[_type == "category"] | order(order asc){title, "slug": slug.current}': NAV_CATEGORIES_QUERY_RESULT;
@@ -633,6 +636,6 @@ declare module "@sanity/client" {
     '*[_type == "product" && slug.current == $slug][0]{\n    title, description, images,\n    origin, material, density, style, pile, weave, sizes, care,\n    "category": category->{title, "slug": slug.current}\n  }': PRODUCT_QUERY_RESULT;
     '*[_type == "product"] | order(title asc){title, "slug": slug.current, images, "categoryTitle": category->title}': ALL_PRODUCTS_QUERY_RESULT;
     '*[_type == "product" && defined(slug.current)]{"slug": slug.current}': PRODUCT_SLUGS_QUERY_RESULT;
-    '*[_type == "shop"] | order(order asc){name, address, phone, email, hours, mapsUrl, image}': SHOPS_QUERY_RESULT;
+    '*[_type == "shop"] | order(order asc){name, address, phone, email, hours, mapsUrl, mapEmbed, image}': SHOPS_QUERY_RESULT;
   }
 }

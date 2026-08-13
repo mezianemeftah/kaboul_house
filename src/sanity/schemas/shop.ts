@@ -33,6 +33,21 @@ export const shop = defineType({
       description: "Coller le lien de partage Google Maps de la boutique.",
     }),
     defineField({
+      name: "mapEmbed",
+      title: "Carte à intégrer",
+      description:
+        "Sur Google Maps : zoomer sur la boutique, puis Partager → Intégrer une carte → Copier le HTML, et coller le bloc entier ici. Le cadrage affiché sur le site est celui de la carte au moment de la copie. Sans ça, la carte n'apparaît pas.",
+      type: "text",
+      rows: 3,
+      validation: (rule) =>
+        rule.custom((valeur) => {
+          if (!valeur) return true;
+          return /src=["']?https:\/\/www\.google\.com\/maps\/embed\?/.test(valeur)
+            ? true
+            : "Coller le bloc <iframe> fourni par « Intégrer une carte » de Google Maps.";
+        }),
+    }),
+    defineField({
       name: "hours",
       title: "Horaires",
       description: "Texte libre, ex. « Lun–Sam : 10h–19h ».",

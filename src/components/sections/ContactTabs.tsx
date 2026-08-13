@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { googleMapsEmbedSrc } from "@/lib/maps";
 import type { HOME_QUERY_RESULT } from "@/sanity/types";
 
 type Shop = NonNullable<HOME_QUERY_RESULT>["shops"][number];
@@ -21,6 +22,7 @@ function fallbackShops(phone: string | null): Shop[] {
       email: null,
       hours: "Lun–Sam : 10h–19h",
       mapsUrl: null,
+      mapEmbed: null,
     },
     {
       name: "Kaboul House — Lyon",
@@ -29,6 +31,7 @@ function fallbackShops(phone: string | null): Shop[] {
       email: null,
       hours: null,
       mapsUrl: null,
+      mapEmbed: null,
     },
   ];
 }
@@ -75,10 +78,11 @@ export function ContactTabs({
   const shop = items[Math.min(active, items.length - 1)];
   const name = shop.name ?? "Kaboul House";
   const hasDetails = Boolean(shop.phone || shop.email || shop.hours || shop.mapsUrl);
+  const mapSrc = googleMapsEmbedSrc(shop.mapEmbed);
 
   return (
     <section id="contact" className="px-sp-4 py-sp-6 md:px-sp-5 md:py-24">
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-6xl">
         <div className="text-grenat">
           <SectionLabel>{kicker ?? FALLBACK_KICKER}</SectionLabel>
         </div>
@@ -115,9 +119,9 @@ export function ContactTabs({
           role="tabpanel"
           id="panneau-boutique"
           aria-labelledby={`onglet-boutique-${active}`}
-          className="mt-sp-5 grid gap-sp-4 md:grid-cols-2 md:gap-sp-6"
+          className="mt-sp-5 grid gap-sp-4 md:grid-cols-12 md:items-start md:gap-sp-6"
         >
-          <div>
+          <div className={mapSrc ? "md:col-span-5" : "md:col-span-8"}>
             <h3 className="font-bonny text-3xl font-medium leading-[1.05] text-encre md:text-4xl">
               {name}
             </h3>
@@ -126,11 +130,9 @@ export function ContactTabs({
                 {shop.address}
               </p>
             )}
-          </div>
 
-          <div>
             {hasDetails ? (
-              <div className="divide-y divide-encre/10 border-t border-encre/10">
+              <div className="mt-sp-4 divide-y divide-encre/10 border-t border-encre/10">
                 {shop.phone && (
                   <DetailRow label="Téléphone">
                     <a href={`tel:${shop.phone.replace(/\s/g, "")}`} className={LINK_CLASSES}>
@@ -164,11 +166,33 @@ export function ContactTabs({
                 )}
               </div>
             ) : (
-              <p className="whitespace-pre-line font-light leading-relaxed text-encre-douce">
+              <p className="mt-sp-4 whitespace-pre-line font-light leading-relaxed text-encre-douce">
                 {emptyText ?? FALLBACK_EMPTY_TEXT}
               </p>
             )}
           </div>
+
+          {/*
+            `key` sur l'iframe : changer son `src` empilerait une entrée dans
+            l'historique du navigateur, et le bouton « précédent » ferait alors
+            reculer la carte au lieu de la page. On remonte l'élément.
+
+            L'arrondi est répété sur l'iframe : `overflow-hidden` du parent ne
+            découpe pas un document embarqué, dont les coins resteraient carrés.
+          */}
+          {mapSrc && (
+            <div className="relative aspect-[4/3] overflow-hidden rounded-panel bg-blush-2 md:col-span-7 md:aspect-[16/11]">
+              <iframe
+                key={mapSrc}
+                src={mapSrc}
+                title={`Carte — ${name}`}
+                loading="lazy"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+                className="absolute inset-0 size-full rounded-panel border-0"
+              />
+            </div>
+          )}
         </div>
       </div>
     </section>
