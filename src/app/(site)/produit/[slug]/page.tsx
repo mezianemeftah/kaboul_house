@@ -42,6 +42,21 @@ export default async function ProduitPage({ params }: { params: Promise<Params> 
   const photos = produit.images ?? [];
   const wa = whatsappUrl(settings?.whatsapp);
 
+  // Toutes les caractéristiques sont facultatives : on n'affiche que celles qui
+  // sont renseignées, et le tableau disparaît si la fiche n'en porte aucune.
+  const caracteristiques = (
+    [
+      ["Origine", produit.origin],
+      ["Matière", produit.material],
+      ["Densité", produit.density],
+      ["Style", produit.style],
+      ["Velours", produit.pile],
+      ["Tissage", produit.weave],
+      ["Tailles disponibles", produit.sizes],
+      ["Entretien", produit.care],
+    ] as const
+  ).filter(([, valeur]) => Boolean(valeur));
+
   return (
     <>
       {/* pt généreux : la navigation flottante passe par-dessus la bande. */}
@@ -93,6 +108,22 @@ export default async function ProduitPage({ params }: { params: Promise<Params> 
           <div className="md:sticky md:top-32">
             {produit.description && (
               <p className="font-light leading-relaxed text-encre">{produit.description}</p>
+            )}
+
+            {caracteristiques.length > 0 && (
+              <dl className="mt-sp-4 border-t border-encre/10">
+                {caracteristiques.map(([intitule, valeur]) => (
+                  <div
+                    key={intitule}
+                    className="flex flex-col gap-1 border-b border-encre/10 py-sp-2 sm:flex-row sm:gap-sp-3"
+                  >
+                    <dt className="font-light uppercase tracking-[0.14em] text-xs text-encre-douce sm:w-44 sm:shrink-0 sm:pt-1">
+                      {intitule}
+                    </dt>
+                    <dd className="font-light leading-relaxed text-encre">{valeur}</dd>
+                  </div>
+                ))}
+              </dl>
             )}
 
             <div className="mt-sp-5 flex flex-col items-start gap-sp-4">

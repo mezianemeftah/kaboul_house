@@ -8,4 +8,8 @@ dist/
 next-env.d.ts
 .wrangler/
 public/images/hero-intro.png
+# Photos extraites du site du client : 4,7 Mo qui n'ont pas leur place dans
+# l'historique. Elles se régénèrent avec scripts/extraire-catalogue-client.mjs
+# et, une fois importées, Sanity fait référence.
+content/catalogue-client/photos/
 .claude/settings.local.json
