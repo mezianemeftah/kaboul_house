@@ -2,6 +2,7 @@ node_modules/
 .next/
 .open-next/
 .sanity/
+dist/
 .env*.local
 *.tsbuildinfo
 next-env.d.ts
