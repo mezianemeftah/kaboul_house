@@ -9,7 +9,7 @@
     "lint": "eslint",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "typegen": "sanity schema extract --path=.sanity/schema.json && sanity typegen generate",
+    "typegen": "sanity schema extract --path=.sanity/schema.json --force && sanity typegen generate",
     "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
   },

@@ -10,15 +10,21 @@ const FALLBACK_TITLE = "L'Orient entre sous votre toit.";
 const FALLBACK_SUBTITLE =
   "Tapis noués main, toshak, textiles, art de la table et fruits secs — de Kaboul jusqu'au cœur de Grenoble et de Lyon.";
 const FALLBACK_IMAGE = "/images/hero-intro.webp";
+const FALLBACK_CTA_LABEL = "Découvrir la boutique";
+const FALLBACK_CTA_HREF = "/boutique";
 
 export function HomeHero({
   title,
   subtitle,
   image,
+  ctaLabel,
+  ctaHref,
 }: {
   title: string | null;
   subtitle: string | null;
   image: Home["heroImage"];
+  ctaLabel: string | null;
+  ctaHref: string | null;
 }) {
   const src = imageUrl(image, 2400) ?? FALLBACK_IMAGE;
 
@@ -42,8 +48,8 @@ export function HomeHero({
           <HeroTitle title={title ?? FALLBACK_TITLE} />
           <HeroSubtitle>{subtitle ?? FALLBACK_SUBTITLE}</HeroSubtitle>
           <div className="mt-sp-5">
-            <Pill href="/boutique" variant="onDark">
-              Découvrir la boutique
+            <Pill href={ctaHref ?? FALLBACK_CTA_HREF} variant="onDark">
+              {ctaLabel ?? FALLBACK_CTA_LABEL}
             </Pill>
           </div>
         </div>

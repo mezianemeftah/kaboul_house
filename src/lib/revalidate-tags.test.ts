@@ -7,7 +7,6 @@ describe("tagsForType", () => {
     expect(tagsForType("category")).toEqual(["category"]);
     expect(tagsForType("shop")).toEqual(["shop"]);
     expect(tagsForType("homePage")).toEqual(["homePage"]);
-    expect(tagsForType("aboutPage")).toEqual(["aboutPage"]);
     expect(tagsForType("siteSettings")).toEqual(["settings"]);
     expect(tagsForType("googleReview")).toEqual(["googleReview"]);
   });

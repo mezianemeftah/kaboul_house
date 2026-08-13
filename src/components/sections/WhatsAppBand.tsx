@@ -9,6 +9,11 @@ import { AmbianceVideo } from "./AmbianceVideo";
 /** Sortie douce : la vidéo prend vite sa taille, puis se pose. */
 const EASE = cubicBezier(0.33, 1, 0.68, 1);
 
+const FALLBACK_TITLE = "Une pièce vous fait de l'œil ?";
+const FALLBACK_TEXT =
+  "Écrivez-nous sur WhatsApp : photos, dimensions, conseils, mise de côté — on s'occupe de tout.";
+const FALLBACK_CTA_LABEL = "Nous écrire sur WhatsApp";
+
 /**
  * Section WhatsApp plein écran, en recouvrement.
  *
@@ -30,7 +35,21 @@ const EASE = cubicBezier(0.33, 1, 0.68, 1);
  * de défilement au lieu de se déclencher seule, et le seul mouvement autonome
  * de la section — la vidéo — dispose de son bouton pause.
  */
-export function WhatsAppBand({ whatsappHref }: { whatsappHref: string }) {
+export function WhatsAppBand({
+  whatsappHref,
+  videoUrl,
+  posterUrl,
+  title,
+  text,
+  ctaLabel,
+}: {
+  whatsappHref: string;
+  videoUrl: string | null;
+  posterUrl: string | null;
+  title: string | null;
+  text: string | null;
+  ctaLabel: string | null;
+}) {
   const ref = useRef<HTMLElement>(null);
 
   const animate = useHydrated();
@@ -50,22 +69,21 @@ export function WhatsAppBand({ whatsappHref }: { whatsappHref: string }) {
         style={animate ? { scale, borderRadius } : undefined}
         aria-hidden
       >
-        <AmbianceVideo />
+        <AmbianceVideo src={videoUrl} poster={posterUrl} />
         <div className="absolute inset-0 bg-encre/45" />
       </motion.div>
 
       <div className="relative flex h-full flex-col items-center justify-center px-sp-4 text-center text-blush">
         <div className="max-w-3xl">
           <h2 className="font-bonny text-4xl font-bold leading-[1.05] md:text-6xl">
-            Une pièce vous fait de l&apos;œil ?
+            {title ?? FALLBACK_TITLE}
           </h2>
-          <p className="mx-auto mt-sp-3 max-w-xl font-light leading-relaxed opacity-90">
-            Écrivez-nous sur WhatsApp : photos, dimensions, conseils, mise de côté — on
-            s&apos;occupe de tout.
+          <p className="mx-auto mt-sp-3 max-w-xl whitespace-pre-line font-light leading-relaxed opacity-90">
+            {text ?? FALLBACK_TEXT}
           </p>
           <div className="mt-sp-5">
             <Pill href={whatsappHref} variant="onDark">
-              Nous écrire sur WhatsApp
+              {ctaLabel ?? FALLBACK_CTA_LABEL}
             </Pill>
           </div>
         </div>

@@ -35,6 +35,11 @@ function fallbackShops(phone: string | null): Shop[] {
 
 const LINK_CLASSES = "text-encre underline-offset-4 transition-colors hover:underline";
 
+const FALLBACK_KICKER = "Nous trouver";
+const FALLBACK_TITLE = "Deux adresses, une même maison";
+const FALLBACK_EMPTY_TEXT =
+  "Ouverture prochaine — écrivez-nous sur WhatsApp pour être prévenus.";
+
 /** Une ligne du relevé de droite — libellé effacé à gauche, valeur alignée à droite. */
 function DetailRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -45,12 +50,24 @@ function DetailRow({ label, children }: { label: string; children: React.ReactNo
   );
 }
 
+/**
+ * L'habillage (surtitre, titre, message) est facultatif : il est administré
+ * depuis la page d'accueil, tandis que la page « Nos boutiques » réutilise ces
+ * mêmes onglets sous son propre titre et se contente donc des valeurs par
+ * défaut.
+ */
 export function ContactTabs({
   shops,
   fallbackPhone = null,
+  kicker = null,
+  title = null,
+  emptyText = null,
 }: {
   shops: Shop[] | null | undefined;
   fallbackPhone?: string | null;
+  kicker?: string | null;
+  title?: string | null;
+  emptyText?: string | null;
 }) {
   const list = (shops ?? []).filter((s): s is Shop & { name: string } => Boolean(s.name));
   const items: Shop[] = list.length > 0 ? list : fallbackShops(fallbackPhone);
@@ -63,10 +80,10 @@ export function ContactTabs({
     <section id="contact" className="px-sp-4 py-sp-6 md:px-sp-5 md:py-24">
       <div className="mx-auto max-w-5xl">
         <div className="text-grenat">
-          <SectionLabel>Nous trouver</SectionLabel>
+          <SectionLabel>{kicker ?? FALLBACK_KICKER}</SectionLabel>
         </div>
         <h2 className="mt-sp-3 font-bonny text-4xl font-bold leading-[1.05] text-encre md:text-5xl">
-          Deux adresses, une même maison
+          {title ?? FALLBACK_TITLE}
         </h2>
 
         <div role="tablist" aria-label="Nos boutiques" className="mt-sp-5 flex flex-wrap gap-sp-2">
@@ -147,8 +164,8 @@ export function ContactTabs({
                 )}
               </div>
             ) : (
-              <p className="font-light leading-relaxed text-encre-douce">
-                Ouverture prochaine — écrivez-nous sur WhatsApp pour être prévenus.
+              <p className="whitespace-pre-line font-light leading-relaxed text-encre-douce">
+                {emptyText ?? FALLBACK_EMPTY_TEXT}
               </p>
             )}
           </div>

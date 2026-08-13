@@ -2,7 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const POSTER = "/images/category-prayer.webp";
+/**
+ * Repli local. La vidéo administrable est facultative à dessein : le fichier
+ * servi ici pèse plusieurs mégaoctets et se charge chez tous les visiteurs.
+ * Tant qu'aucun fichier n'est déposé dans le back-office, on sert celui du
+ * site plutôt que de le faire transiter par le CDN Sanity.
+ */
+const FALLBACK_SRC = "/videos/ambiance.mp4";
+const FALLBACK_POSTER = "/images/category-prayer.webp";
 
 /**
  * Fond vidéo de la section WhatsApp.
@@ -18,7 +25,13 @@ const POSTER = "/images/category-prayer.webp";
  * en plein écran sur iOS ; `muted` est requis pour que la lecture automatique
  * soit acceptée par les navigateurs.
  */
-export function AmbianceVideo() {
+export function AmbianceVideo({
+  src,
+  poster,
+}: {
+  src: string | null;
+  poster: string | null;
+}) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(true);
 
@@ -46,8 +59,8 @@ export function AmbianceVideo() {
       <video
         ref={videoRef}
         className="h-full w-full object-cover"
-        src="/videos/ambiance.mp4"
-        poster={POSTER}
+        src={src ?? FALLBACK_SRC}
+        poster={poster ?? FALLBACK_POSTER}
         autoPlay
         muted
         loop

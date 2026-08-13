@@ -4,17 +4,40 @@ export const SETTINGS_QUERY = defineQuery(
   `*[_type == "siteSettings"][0]{whatsapp, phone, instagram, facebook, googleReviewsUrl, seoDescription, ogImage}`,
 );
 
+/**
+ * Page d'accueil : l'habillage de chaque bloc, puis ses éléments.
+ *
+ * Les univers, boutiques et avis sont des listes automatiques — tout ce qui
+ * existe, dans l'ordre défini sur les fiches. Les coups de cœur sont une
+ * sélection : `featuredProducts[]->` déréférence les fiches choisies, si bien
+ * que le nom, les photos et l'univers affichés viennent toujours du produit
+ * lui-même. Rien n'est recopié dans la page.
+ */
 export const HOME_QUERY = defineQuery(
   `*[_type == "homePage"][0]{
-    heroTitle, heroSubtitle, heroImage,
-    aboutTitle, aboutText,
+    heroTitle, heroSubtitle, heroImage, heroCtaLabel, heroCtaHref,
+
+    universKicker, universTitle, universIntro, universLinkLabel,
+
+    "videoUrl": videoFile.asset->url,
+    videoPoster, videoTitle, videoText, videoCtaLabel,
+
+    aboutKicker, aboutTitle, aboutText, aboutImageLarge, aboutImageSmall,
+
+    featuredKicker, featuredTitle,
+    "featuredProducts": featuredProducts[]->{
+      title, "slug": slug.current, images,
+      "categoryTitle": category->title
+    },
+
+    shopsKicker, shopsTitle, shopsEmptyText,
+
+    reviewsKicker, reviewsTitle, reviewsEmptyText, reviewsLinkLabel,
+
+    seoTitle, seoDescription,
+
     "categories": *[_type == "category"] | order(order asc){
       title, "slug": slug.current, kicker, description, image
-    },
-    "featuredProducts": *[_type == "product" && featured == true]
-      | order(_updatedAt desc)[0...5]{
-        title, "slug": slug.current, images,
-        "categoryTitle": category->title
     },
     "shops": *[_type == "shop"] | order(order asc){
       name, address, phone, email, hours, mapsUrl
@@ -25,15 +48,20 @@ export const HOME_QUERY = defineQuery(
   }`,
 );
 
-export const ABOUT_QUERY = defineQuery(
-  `*[_type == "aboutPage"][0]{title, intro, story, image}`,
+/**
+ * Métadonnées de l'accueil seules. Requête distincte de HOME_QUERY parce que
+ * Next appelle `generateMetadata` séparément du rendu : inutile d'y retraverser
+ * les univers, les produits et les avis.
+ */
+export const HOME_SEO_QUERY = defineQuery(
+  `*[_type == "homePage"][0]{seoTitle, seoDescription}`,
 );
 
 export const CATEGORY_QUERY = defineQuery(
   `*[_type == "category" && slug.current == $slug][0]{
     title, description, image,
     "products": *[_type == "product" && category._ref == ^._id]
-      | order(featured desc, title asc){
+      | order(title asc){
         title, "slug": slug.current, description, images
     }
   }`,

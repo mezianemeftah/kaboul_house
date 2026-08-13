@@ -46,13 +46,9 @@ export const product = defineType({
       validation: (rule) => rule.min(1).error("Au moins une photo."),
     }),
     defineField({ name: "description", title: "Description", type: "text", rows: 4 }),
-    defineField({
-      name: "featured",
-      title: "Mettre en avant",
-      description: "Affiché en priorité dans son univers.",
-      type: "boolean",
-      initialValue: false,
-    }),
+    // La mise en avant ne se décide plus ici : elle se choisit sur la page
+    // d'accueil (« Nos coups de cœur »), où l'on voit d'un coup d'œil la
+    // vitrine entière et où l'ordre se règle par glisser-déposer.
   ],
   preview: {
     select: { title: "title", subtitle: "category.title", media: "images.0" },

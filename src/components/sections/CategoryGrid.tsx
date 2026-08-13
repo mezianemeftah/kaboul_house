@@ -64,6 +64,12 @@ const BENTO_SPANS = [
 
 const DEFAULT_SPAN = "lg:col-span-2";
 
+const FALLBACK_KICKER = "Nos univers";
+const FALLBACK_TITLE = "Cinq mondes, une même maison";
+const FALLBACK_INTRO =
+  "Du tapis sous vos pieds à l'assiette de votre invité, chaque pièce raconte l'hospitalité orientale. Choisissez par où commencer.";
+const FALLBACK_LINK_LABEL = "Voir";
+
 function toCards(categories: Category[] | null | undefined): Card[] {
   const cards: Card[] = [];
   for (const c of categories ?? []) {
@@ -84,21 +90,32 @@ function toCards(categories: Category[] | null | undefined): Card[] {
 /** « 01 », « 02 »… d'après la place dans la grille. */
 const numero = (index: number) => String(index + 1).padStart(2, "0");
 
-export function CategoryGrid({ categories }: { categories: Category[] | null | undefined }) {
+export function CategoryGrid({
+  categories,
+  kicker,
+  title,
+  intro,
+  linkLabel,
+}: {
+  categories: Category[] | null | undefined;
+  kicker: string | null;
+  title: string | null;
+  intro: string | null;
+  linkLabel: string | null;
+}) {
   const cards = toCards(categories);
 
   return (
     <section className="px-sp-4 py-sp-6 md:px-sp-5 md:py-24">
       <div className="mx-auto max-w-6xl">
         <div className="text-grenat">
-          <SectionLabel>Nos univers</SectionLabel>
+          <SectionLabel>{kicker ?? FALLBACK_KICKER}</SectionLabel>
         </div>
         <h2 className="mt-sp-3 max-w-2xl font-bonny text-4xl font-bold leading-[1.05] text-encre md:text-5xl">
-          Cinq mondes, une même maison
+          {title ?? FALLBACK_TITLE}
         </h2>
-        <p className="mt-sp-4 max-w-2xl font-light leading-relaxed text-encre-douce">
-          Du tapis sous vos pieds à l&apos;assiette de votre invité, chaque pièce raconte
-          l&apos;hospitalité orientale. Choisissez par où commencer.
+        <p className="mt-sp-4 max-w-2xl whitespace-pre-line font-light leading-relaxed text-encre-douce">
+          {intro ?? FALLBACK_INTRO}
         </p>
 
         <div className="mt-sp-5 grid auto-rows-[20rem] gap-sp-3 sm:grid-cols-2 md:mt-sp-6 lg:auto-rows-[23rem] lg:grid-cols-6">
@@ -151,7 +168,7 @@ export function CategoryGrid({ categories }: { categories: Category[] | null | u
                     </p>
                   )}
                   <span className="mt-sp-4 inline-flex items-center gap-sp-2 font-light">
-                    Voir
+                    {linkLabel ?? FALLBACK_LINK_LABEL}
                     <span
                       className="transition-transform duration-300 group-hover:translate-x-1"
                       style={{ transitionTimingFunction: "var(--ease-signature)" }}

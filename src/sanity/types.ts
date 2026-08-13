@@ -98,7 +98,6 @@ export type Product = {
     _key: string;
   }>;
   description?: string;
-  featured?: boolean;
 };
 
 export type Slug = {
@@ -128,40 +127,18 @@ export type Category = {
   order?: number;
 };
 
-export type AboutPage = {
-  _id: string;
-  _type: "aboutPage";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  intro?: string;
-  story?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
-  image?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type ProductReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "product";
 };
 
 export type HomePage = {
@@ -180,8 +157,63 @@ export type HomePage = {
     alt?: string;
     _type: "image";
   };
+  heroCtaLabel?: string;
+  heroCtaHref?: string;
+  universKicker?: string;
+  universTitle?: string;
+  universIntro?: string;
+  universLinkLabel?: string;
+  videoFile?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  videoPoster?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  videoTitle?: string;
+  videoText?: string;
+  videoCtaLabel?: string;
+  aboutKicker?: string;
   aboutTitle?: string;
   aboutText?: string;
+  aboutImageLarge?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  aboutImageSmall?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  featuredKicker?: string;
+  featuredTitle?: string;
+  featuredProducts?: Array<
+    {
+      _key: string;
+    } & ProductReference
+  >;
+  shopsKicker?: string;
+  shopsTitle?: string;
+  shopsEmptyText?: string;
+  reviewsKicker?: string;
+  reviewsTitle?: string;
+  reviewsEmptyText?: string;
+  reviewsLinkLabel?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 };
 
 export type SiteSettings = {
@@ -313,7 +345,8 @@ export type AllSanitySchemaTypes =
   | Product
   | Slug
   | Category
-  | AboutPage
+  | SanityFileAssetReference
+  | ProductReference
   | HomePage
   | SiteSettings
   | SanityImagePaletteSwatch
@@ -347,7 +380,7 @@ export type SETTINGS_QUERY_RESULT = {
 
 // Source: src/sanity/queries/index.ts
 // Variable: HOME_QUERY
-// Query: *[_type == "homePage"][0]{    heroTitle, heroSubtitle, heroImage,    aboutTitle, aboutText,    "categories": *[_type == "category"] | order(order asc){      title, "slug": slug.current, kicker, description, image    },    "featuredProducts": *[_type == "product" && featured == true]      | order(_updatedAt desc)[0...5]{        title, "slug": slug.current, images,        "categoryTitle": category->title    },    "shops": *[_type == "shop"] | order(order asc){      name, address, phone, email, hours, mapsUrl    },    "reviews": *[_type == "googleReview"] | order(_createdAt desc)[0...6]{      _id, author, rating, text    }  }
+// Query: *[_type == "homePage"][0]{    heroTitle, heroSubtitle, heroImage, heroCtaLabel, heroCtaHref,    universKicker, universTitle, universIntro, universLinkLabel,    "videoUrl": videoFile.asset->url,    videoPoster, videoTitle, videoText, videoCtaLabel,    aboutKicker, aboutTitle, aboutText, aboutImageLarge, aboutImageSmall,    featuredKicker, featuredTitle,    "featuredProducts": featuredProducts[]->{      title, "slug": slug.current, images,      "categoryTitle": category->title    },    shopsKicker, shopsTitle, shopsEmptyText,    reviewsKicker, reviewsTitle, reviewsEmptyText, reviewsLinkLabel,    seoTitle, seoDescription,    "categories": *[_type == "category"] | order(order asc){      title, "slug": slug.current, kicker, description, image    },    "shops": *[_type == "shop"] | order(order asc){      name, address, phone, email, hours, mapsUrl    },    "reviews": *[_type == "googleReview"] | order(_createdAt desc)[0...6]{      _id, author, rating, text    }  }
 export type HOME_QUERY_RESULT = {
   heroTitle: string | null;
   heroSubtitle: string | null;
@@ -359,22 +392,45 @@ export type HOME_QUERY_RESULT = {
     alt?: string;
     _type: "image";
   } | null;
+  heroCtaLabel: string | null;
+  heroCtaHref: string | null;
+  universKicker: string | null;
+  universTitle: string | null;
+  universIntro: string | null;
+  universLinkLabel: string | null;
+  videoUrl: string | null;
+  videoPoster: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+  videoTitle: string | null;
+  videoText: string | null;
+  videoCtaLabel: string | null;
+  aboutKicker: string | null;
   aboutTitle: string | null;
   aboutText: string | null;
-  categories: Array<{
-    title: string | null;
-    slug: string | null;
-    kicker: string | null;
-    description: string | null;
-    image: {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: "image";
-    } | null;
-  }>;
+  aboutImageLarge: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+  aboutImageSmall: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+  featuredKicker: string | null;
+  featuredTitle: string | null;
   featuredProducts: Array<{
     title: string | null;
     slug: string | null;
@@ -388,6 +444,29 @@ export type HOME_QUERY_RESULT = {
       _key: string;
     }> | null;
     categoryTitle: string | null;
+  }> | null;
+  shopsKicker: string | null;
+  shopsTitle: string | null;
+  shopsEmptyText: string | null;
+  reviewsKicker: string | null;
+  reviewsTitle: string | null;
+  reviewsEmptyText: string | null;
+  reviewsLinkLabel: string | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
+  categories: Array<{
+    title: string | null;
+    slug: string | null;
+    kicker: string | null;
+    description: string | null;
+    image: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+    } | null;
   }>;
   shops: Array<{
     name: string | null;
@@ -406,42 +485,16 @@ export type HOME_QUERY_RESULT = {
 } | null;
 
 // Source: src/sanity/queries/index.ts
-// Variable: ABOUT_QUERY
-// Query: *[_type == "aboutPage"][0]{title, intro, story, image}
-export type ABOUT_QUERY_RESULT = {
-  title: string | null;
-  intro: string | null;
-  story: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }> | null;
-  image: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  } | null;
+// Variable: HOME_SEO_QUERY
+// Query: *[_type == "homePage"][0]{seoTitle, seoDescription}
+export type HOME_SEO_QUERY_RESULT = {
+  seoTitle: string | null;
+  seoDescription: string | null;
 } | null;
 
 // Source: src/sanity/queries/index.ts
 // Variable: CATEGORY_QUERY
-// Query: *[_type == "category" && slug.current == $slug][0]{    title, description, image,    "products": *[_type == "product" && category._ref == ^._id]      | order(featured desc, title asc){        title, "slug": slug.current, description, images    }  }
+// Query: *[_type == "category" && slug.current == $slug][0]{    title, description, image,    "products": *[_type == "product" && category._ref == ^._id]      | order(title asc){        title, "slug": slug.current, description, images    }  }
 export type CATEGORY_QUERY_RESULT = {
   title: string | null;
   description: string | null;
@@ -555,9 +608,9 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "siteSettings"][0]{whatsapp, phone, instagram, facebook, googleReviewsUrl, seoDescription, ogImage}': SETTINGS_QUERY_RESULT;
-    '*[_type == "homePage"][0]{\n    heroTitle, heroSubtitle, heroImage,\n    aboutTitle, aboutText,\n    "categories": *[_type == "category"] | order(order asc){\n      title, "slug": slug.current, kicker, description, image\n    },\n    "featuredProducts": *[_type == "product" && featured == true]\n      | order(_updatedAt desc)[0...5]{\n        title, "slug": slug.current, images,\n        "categoryTitle": category->title\n    },\n    "shops": *[_type == "shop"] | order(order asc){\n      name, address, phone, email, hours, mapsUrl\n    },\n    "reviews": *[_type == "googleReview"] | order(_createdAt desc)[0...6]{\n      _id, author, rating, text\n    }\n  }': HOME_QUERY_RESULT;
-    '*[_type == "aboutPage"][0]{title, intro, story, image}': ABOUT_QUERY_RESULT;
-    '*[_type == "category" && slug.current == $slug][0]{\n    title, description, image,\n    "products": *[_type == "product" && category._ref == ^._id]\n      | order(featured desc, title asc){\n        title, "slug": slug.current, description, images\n    }\n  }': CATEGORY_QUERY_RESULT;
+    '*[_type == "homePage"][0]{\n    heroTitle, heroSubtitle, heroImage, heroCtaLabel, heroCtaHref,\n\n    universKicker, universTitle, universIntro, universLinkLabel,\n\n    "videoUrl": videoFile.asset->url,\n    videoPoster, videoTitle, videoText, videoCtaLabel,\n\n    aboutKicker, aboutTitle, aboutText, aboutImageLarge, aboutImageSmall,\n\n    featuredKicker, featuredTitle,\n    "featuredProducts": featuredProducts[]->{\n      title, "slug": slug.current, images,\n      "categoryTitle": category->title\n    },\n\n    shopsKicker, shopsTitle, shopsEmptyText,\n\n    reviewsKicker, reviewsTitle, reviewsEmptyText, reviewsLinkLabel,\n\n    seoTitle, seoDescription,\n\n    "categories": *[_type == "category"] | order(order asc){\n      title, "slug": slug.current, kicker, description, image\n    },\n    "shops": *[_type == "shop"] | order(order asc){\n      name, address, phone, email, hours, mapsUrl\n    },\n    "reviews": *[_type == "googleReview"] | order(_createdAt desc)[0...6]{\n      _id, author, rating, text\n    }\n  }': HOME_QUERY_RESULT;
+    '*[_type == "homePage"][0]{seoTitle, seoDescription}': HOME_SEO_QUERY_RESULT;
+    '*[_type == "category" && slug.current == $slug][0]{\n    title, description, image,\n    "products": *[_type == "product" && category._ref == ^._id]\n      | order(title asc){\n        title, "slug": slug.current, description, images\n    }\n  }': CATEGORY_QUERY_RESULT;
     '*[_type == "category"] | order(order asc){title, "slug": slug.current}': NAV_CATEGORIES_QUERY_RESULT;
     '*[_type == "category" && defined(slug.current)]{"slug": slug.current}': CATEGORY_SLUGS_QUERY_RESULT;
     '*[_type == "product" && slug.current == $slug][0]{\n    title, description, images,\n    "category": category->{title, "slug": slug.current}\n  }': PRODUCT_QUERY_RESULT;

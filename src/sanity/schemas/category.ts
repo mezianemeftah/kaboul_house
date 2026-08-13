@@ -31,9 +31,10 @@ export const category = defineType({
     defineField({
       name: "image",
       title: "Photo de couverture",
+      description:
+        "Sans photo, la carte affiche une tuile en dégradé portant son numéro — le site reste présentable en attendant.",
       type: "image",
       options: { hotspot: true },
-      validation: (rule) => rule.required(),
       fields: [
         defineField({
           name: "alt",

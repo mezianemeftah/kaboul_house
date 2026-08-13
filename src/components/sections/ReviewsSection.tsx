@@ -3,6 +3,11 @@ import type { HOME_QUERY_RESULT } from "@/sanity/types";
 
 type Review = NonNullable<HOME_QUERY_RESULT>["reviews"][number];
 
+const FALLBACK_KICKER = "Avis Google";
+const FALLBACK_TITLE = "Ils ont poussé la porte";
+const FALLBACK_EMPTY_TEXT = "Les avis de nos clients apparaîtront ici très bientôt.";
+const FALLBACK_LINK_LABEL = "Voir notre fiche Google";
+
 function Stars({ rating }: { rating: number }) {
   const value = Math.max(1, Math.min(5, Math.round(rating)));
   return (
@@ -15,9 +20,17 @@ function Stars({ rating }: { rating: number }) {
 export function ReviewsSection({
   reviews,
   googleReviewsUrl,
+  kicker,
+  title,
+  emptyText,
+  linkLabel,
 }: {
   reviews: Review[] | null | undefined;
   googleReviewsUrl: string | null | undefined;
+  kicker: string | null;
+  title: string | null;
+  emptyText: string | null;
+  linkLabel: string | null;
 }) {
   const list = (reviews ?? []).filter((r) => r.text);
 
@@ -25,10 +38,10 @@ export function ReviewsSection({
     <section className="px-sp-4 py-sp-6 md:px-sp-5 md:py-24">
       <div className="mx-auto max-w-6xl">
         <div className="text-grenat">
-          <SectionLabel>Avis Google</SectionLabel>
+          <SectionLabel>{kicker ?? FALLBACK_KICKER}</SectionLabel>
         </div>
         <h2 className="mt-sp-3 font-bonny text-4xl font-bold leading-[1.05] text-encre md:text-5xl">
-          Ils ont poussé la porte
+          {title ?? FALLBACK_TITLE}
         </h2>
 
         {list.length > 0 ? (
@@ -49,8 +62,8 @@ export function ReviewsSection({
           </div>
         ) : (
           <div className="mx-auto mt-sp-5 max-w-xl rounded-panel bg-creme p-sp-5 text-center md:mt-sp-6">
-            <p className="font-light leading-relaxed text-encre-douce">
-              Les avis de nos clients apparaîtront ici très bientôt.
+            <p className="whitespace-pre-line font-light leading-relaxed text-encre-douce">
+              {emptyText ?? FALLBACK_EMPTY_TEXT}
             </p>
             {googleReviewsUrl && (
               <a
@@ -59,7 +72,7 @@ export function ReviewsSection({
                 rel="noopener noreferrer"
                 className="mt-sp-3 inline-block text-grenat underline decoration-grenat/40 underline-offset-8 transition-colors hover:decoration-grenat"
               >
-                Voir notre fiche Google →
+                {linkLabel ?? FALLBACK_LINK_LABEL} →
               </a>
             )}
           </div>

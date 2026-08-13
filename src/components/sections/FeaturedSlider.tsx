@@ -10,7 +10,9 @@ import { FALLBACK_PRODUCTS, PLACEHOLDER_GRADIENTS } from "@/lib/fallback-content
 import { imageUrl } from "@/sanity/lib/image";
 import type { HOME_QUERY_RESULT } from "@/sanity/types";
 
-type Product = NonNullable<HOME_QUERY_RESULT>["featuredProducts"][number];
+// Double NonNullable : le champ est absent tant qu'aucun produit n'est
+// sélectionné dans le back-office, la requête renvoie alors null.
+type Product = NonNullable<NonNullable<HOME_QUERY_RESULT>["featuredProducts"]>[number];
 
 type Item = {
   key: string;
@@ -27,6 +29,9 @@ const FALLBACK: Item[] = FALLBACK_PRODUCTS.map((i) => ({
   src: null,
   alt: "",
 }));
+
+const FALLBACK_KICKER = "Nos coups de cœur";
+const FALLBACK_TITLE = "Cinq pièces qui font la maison";
 
 function toItems(products: Product[] | null | undefined): Item[] {
   const items: Item[] = [];
@@ -105,7 +110,15 @@ function Slide({ item, index }: { item: Item; index: number }) {
  * reprend — on ne se bat pas avec la pièce qu'on est en train de regarder.
  * Les flèches doublent le glisser au clavier, qui ne peut pas l'imiter.
  */
-export function FeaturedSlider({ products }: { products: Product[] | null | undefined }) {
+export function FeaturedSlider({
+  products,
+  kicker,
+  title,
+}: {
+  products: Product[] | null | undefined;
+  kicker: string | null;
+  title: string | null;
+}) {
   const items = toItems(products);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -122,10 +135,10 @@ export function FeaturedSlider({ products }: { products: Product[] | null | unde
         <div className="flex flex-wrap items-end justify-between gap-sp-4">
           <div>
             <div className="text-grenat">
-              <SectionLabel>Nos coups de cœur</SectionLabel>
+              <SectionLabel>{kicker ?? FALLBACK_KICKER}</SectionLabel>
             </div>
             <h2 className="mt-sp-3 max-w-2xl font-bonny text-4xl font-bold leading-[1.05] text-encre md:text-5xl">
-              Cinq pièces qui font la maison
+              {title ?? FALLBACK_TITLE}
             </h2>
           </div>
 

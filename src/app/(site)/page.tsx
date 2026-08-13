@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { CategoryGrid } from "@/components/sections/CategoryGrid";
 import { ContactTabs } from "@/components/sections/ContactTabs";
@@ -7,7 +8,19 @@ import { ReviewsSection } from "@/components/sections/ReviewsSection";
 import { WhatsAppBand } from "@/components/sections/WhatsAppBand";
 import { whatsappUrl } from "@/lib/whatsapp";
 import { sanityFetch } from "@/sanity/lib/fetch";
-import { HOME_QUERY, SETTINGS_QUERY } from "@/sanity/queries";
+import { imageUrl } from "@/sanity/lib/image";
+import { HOME_QUERY, HOME_SEO_QUERY, SETTINGS_QUERY } from "@/sanity/queries";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await sanityFetch({ query: HOME_SEO_QUERY, tags: ["homePage"] });
+  return {
+    // `absolute` : le gabarit « %s — Kaboul House » du layout racine ajoute le
+    // nom de la maison à chaque page. Sur l'accueil, le titre saisi doit
+    // s'afficher tel quel, sans suffixe.
+    ...(seo?.seoTitle && { title: { absolute: seo.seoTitle } }),
+    ...(seo?.seoDescription && { description: seo.seoDescription }),
+  };
+}
 
 export default async function HomePage() {
   const [home, settings] = await Promise.all([
@@ -25,6 +38,8 @@ export default async function HomePage() {
         title={home?.heroTitle ?? null}
         subtitle={home?.heroSubtitle ?? null}
         image={home?.heroImage ?? null}
+        ctaLabel={home?.heroCtaLabel ?? null}
+        ctaHref={home?.heroCtaHref ?? null}
       />
       {/*
         Recouvrement : « Nos univers » se fige dès que son bas touche le bas de
@@ -47,17 +62,50 @@ export default async function HomePage() {
           la vidéo qui monte.
         */}
         <div className="sticky bottom-0 z-0 min-h-svh">
-          <CategoryGrid categories={home?.categories} />
+          <CategoryGrid
+            categories={home?.categories}
+            kicker={home?.universKicker ?? null}
+            title={home?.universTitle ?? null}
+            intro={home?.universIntro ?? null}
+            linkLabel={home?.universLinkLabel ?? null}
+          />
         </div>
-        <WhatsAppBand whatsappHref={wa} />
+        <WhatsAppBand
+          whatsappHref={wa}
+          videoUrl={home?.videoUrl ?? null}
+          posterUrl={imageUrl(home?.videoPoster, 1600)}
+          title={home?.videoTitle ?? null}
+          text={home?.videoText ?? null}
+          ctaLabel={home?.videoCtaLabel ?? null}
+        />
       </div>
-      <AboutSection title={home?.aboutTitle ?? null} text={home?.aboutText ?? null} />
-      <FeaturedSlider products={home?.featuredProducts} />
+      <AboutSection
+        kicker={home?.aboutKicker ?? null}
+        title={home?.aboutTitle ?? null}
+        text={home?.aboutText ?? null}
+        imageLarge={home?.aboutImageLarge ?? null}
+        imageSmall={home?.aboutImageSmall ?? null}
+      />
+      <FeaturedSlider
+        products={home?.featuredProducts}
+        kicker={home?.featuredKicker ?? null}
+        title={home?.featuredTitle ?? null}
+      />
       <ContactTabs
         shops={home?.shops}
         fallbackPhone={settings?.phone ?? settings?.whatsapp ?? null}
+        kicker={home?.shopsKicker ?? null}
+        title={home?.shopsTitle ?? null}
+        emptyText={home?.shopsEmptyText ?? null}
       />
-      <ReviewsSection reviews={home?.reviews} googleReviewsUrl={settings?.googleReviewsUrl} />
+      <ReviewsSection
+        reviews={home?.reviews}
+        googleReviewsUrl={settings?.googleReviewsUrl}
+        kicker={home?.reviewsKicker ?? null}
+        title={home?.reviewsTitle ?? null}
+        emptyText={home?.reviewsEmptyText ?? null}
+        linkLabel={home?.reviewsLinkLabel ?? null}
+      />
     </>
   );
 }
