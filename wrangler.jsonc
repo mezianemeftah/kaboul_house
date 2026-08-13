@@ -1,0 +1,47 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"main": ".open-next/worker.js",
+	"name": "kaboul-house",
+	"compatibility_date": "2026-08-13",
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"services": [
+		{
+			// Auto-référence : le nom du service doit correspondre à celui du worker
+			"binding": "WORKER_SELF_REFERENCE",
+			"service": "kaboul-house"
+		}
+	],
+	"kv_namespaces": [
+		{
+			// Cache incrémental (pages ISR/SSG)
+			"binding": "NEXT_INC_CACHE_KV",
+			"id": "9de6aaba8ff64e18b41755b07cdb401b"
+		},
+		{
+			// Tag cache : alimente revalidateTag depuis le webhook Sanity
+			"binding": "NEXT_TAG_CACHE_KV",
+			"id": "fe57f6fea13848c69791023f755eb33b"
+		}
+	],
+	"durable_objects": {
+		"bindings": [
+			{
+				// File de revalidation (SQLite : seul backend dispo en plan gratuit)
+				"name": "NEXT_CACHE_DO_QUEUE",
+				"class_name": "DOQueueHandler"
+			}
+		]
+	},
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_sqlite_classes": ["DOQueueHandler"]
+		}
+	]
+	// Pas de binding "images" : les transformations passent par le CDN Sanity
+	// via un loader next/image custom (cf. spec architecture).
+}
