@@ -25,6 +25,16 @@ export const googleReview = defineType({
       rows: 3,
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: "order",
+      title: "Ordre d'affichage",
+      description: "1 = premier. Seuls les 6 premiers apparaissent sur la page d'accueil.",
+      type: "number",
+      initialValue: 10,
+    }),
+  ],
+  orderings: [
+    { name: "orderAsc", title: "Ordre d'affichage", by: [{ field: "order", direction: "asc" }] },
   ],
   preview: {
     select: { title: "author", subtitle: "text" },

@@ -42,7 +42,7 @@ export const HOME_QUERY = defineQuery(
     "shops": *[_type == "shop"] | order(order asc){
       name, address, phone, email, hours, mapsUrl
     },
-    "reviews": *[_type == "googleReview"] | order(_createdAt desc)[0...6]{
+    "reviews": *[_type == "googleReview"] | order(order asc)[0...6]{
       _id, author, rating, text
     }
   }`,
@@ -79,6 +79,7 @@ export const CATEGORY_SLUGS_QUERY = defineQuery(
 export const PRODUCT_QUERY = defineQuery(
   `*[_type == "product" && slug.current == $slug][0]{
     title, description, images,
+    origin, material, density, style, pile, weave, sizes, care,
     "category": category->{title, "slug": slug.current}
   }`,
 );

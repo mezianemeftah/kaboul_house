@@ -34,6 +34,21 @@ export function ReviewsSection({
 }) {
   const list = (reviews ?? []).filter((r) => r.text);
 
+  /**
+   * Ces témoignages sont recopiés de la fiche Google : le lien vers la source
+   * accompagne donc la grille autant que l'état vide, il tient lieu d'attribution.
+   */
+  const lienGoogle = googleReviewsUrl && (
+    <a
+      href={googleReviewsUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-block text-grenat underline decoration-grenat/40 underline-offset-8 transition-colors hover:decoration-grenat"
+    >
+      {linkLabel ?? FALLBACK_LINK_LABEL} →
+    </a>
+  );
+
   return (
     <section className="px-sp-4 py-sp-6 md:px-sp-5 md:py-24">
       <div className="mx-auto max-w-6xl">
@@ -45,36 +60,30 @@ export function ReviewsSection({
         </h2>
 
         {list.length > 0 ? (
-          <div className="mt-sp-5 grid gap-sp-3 md:mt-sp-6 md:grid-cols-2 lg:grid-cols-3">
-            {list.map((review) => (
-              <figure key={review._id} className="rounded-panel bg-blush-2 p-sp-4">
-                {review.rating != null && <Stars rating={review.rating} />}
-                <blockquote className="mt-sp-2 font-light leading-relaxed text-encre">
-                  {review.text}
-                </blockquote>
-                {review.author && (
-                  <figcaption className="mt-sp-3 font-normal text-encre-douce">
-                    {review.author}
-                  </figcaption>
-                )}
-              </figure>
-            ))}
-          </div>
+          <>
+            <div className="mt-sp-5 grid gap-sp-3 md:mt-sp-6 md:grid-cols-2 lg:grid-cols-3">
+              {list.map((review) => (
+                <figure key={review._id} className="rounded-panel bg-blush-2 p-sp-4">
+                  {review.rating != null && <Stars rating={review.rating} />}
+                  <blockquote className="mt-sp-2 font-light leading-relaxed text-encre">
+                    {review.text}
+                  </blockquote>
+                  {review.author && (
+                    <figcaption className="mt-sp-3 font-normal text-encre-douce">
+                      {review.author}
+                    </figcaption>
+                  )}
+                </figure>
+              ))}
+            </div>
+            {lienGoogle && <p className="mt-sp-5 text-center">{lienGoogle}</p>}
+          </>
         ) : (
           <div className="mx-auto mt-sp-5 max-w-xl rounded-panel bg-creme p-sp-5 text-center md:mt-sp-6">
             <p className="whitespace-pre-line font-light leading-relaxed text-encre-douce">
               {emptyText ?? FALLBACK_EMPTY_TEXT}
             </p>
-            {googleReviewsUrl && (
-              <a
-                href={googleReviewsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-sp-3 inline-block text-grenat underline decoration-grenat/40 underline-offset-8 transition-colors hover:decoration-grenat"
-              >
-                {linkLabel ?? FALLBACK_LINK_LABEL} →
-              </a>
-            )}
+            {lienGoogle && <p className="mt-sp-3">{lienGoogle}</p>}
           </div>
         )}
       </div>
