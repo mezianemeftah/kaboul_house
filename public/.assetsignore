@@ -1,0 +1,7 @@
+# Fichiers présents dans public/ mais à ne pas téléverser sur Cloudflare.
+# Syntaxe façon .gitignore, chemins relatifs à la racine des assets.
+
+# Source PNG d'origine (6,5 Mo), conservée en local pour régénérer le webp.
+# Seul hero-intro.webp est référencé par le code ; téléverser le PNG allongeait
+# l'envoi des assets pour un fichier jamais servi.
+images/hero-intro.png

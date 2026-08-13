@@ -1,0 +1,808 @@
+[
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "description": "Format international, ex. +33 7 80 79 96 89 — utilisé par tous les boutons « Nous écrire ».",
+        "name": "whatsapp",
+        "type": "string",
+        "title": "Numéro WhatsApp"
+      },
+      {
+        "name": "phone",
+        "type": "string",
+        "title": "Téléphone (affiché)"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "name": "instagram",
+        "type": "url",
+        "title": "Lien Instagram"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "name": "facebook",
+        "type": "url",
+        "title": "Lien Facebook"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "description": "Lien « Voir tous les avis » affiché sous la section Avis Google.",
+        "name": "googleReviewsUrl",
+        "type": "url",
+        "title": "Lien vers la fiche Google (avis)"
+      },
+      {
+        "rows": 3,
+        "description": "Une à deux phrases affichées dans les résultats Google.",
+        "name": "seoDescription",
+        "type": "text",
+        "title": "Description SEO par défaut"
+      },
+      {
+        "fields": [
+          {
+            "description": "Décrit la photo pour les lecteurs d'écran et Google (ex. « Tapis afghan rouge noué main »).",
+            "name": "alt",
+            "type": "string",
+            "title": "Texte alternatif"
+          }
+        ],
+        "name": "ogImage",
+        "type": "image",
+        "title": "Image de partage (réseaux sociaux)"
+      }
+    ],
+    "name": "siteSettings",
+    "type": "document",
+    "title": "Réglages du site"
+  },
+  {
+    "fields": [
+      {
+        "initialValue": "L'Orient entre sous votre toit.",
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "description": "Le grand titre sur la photo plein écran, tout en haut du site.",
+        "name": "heroTitle",
+        "type": "string",
+        "title": "Titre"
+      },
+      {
+        "rows": 2,
+        "initialValue": "Tapis noués main, toshak, textiles, art de la table et fruits secs — de Kaboul jusqu'au cœur de Grenoble et de Lyon.",
+        "description": "La phrase sous le grand titre.",
+        "name": "heroSubtitle",
+        "type": "text",
+        "title": "Sous-titre"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "description": "Photo plein écran derrière le titre. Sans photo, l'image par défaut est utilisée.",
+        "fields": [
+          {
+            "description": "Décrit la photo pour les lecteurs d'écran et Google (ex. « Tapis afghan rouge noué main »).",
+            "name": "alt",
+            "type": "string",
+            "title": "Texte alternatif"
+          }
+        ],
+        "name": "heroImage",
+        "type": "image",
+        "title": "Photo de fond"
+      },
+      {
+        "initialValue": "Découvrir la boutique",
+        "name": "heroCtaLabel",
+        "type": "string",
+        "title": "Libellé du bouton"
+      },
+      {
+        "initialValue": "/boutique",
+        "description": "Adresse d'une page du site, ex. « /boutique » ou « /tapis ».",
+        "name": "heroCtaHref",
+        "type": "string",
+        "title": "Lien du bouton"
+      },
+      {
+        "initialValue": "Nos univers",
+        "description": "Le petit texte au-dessus du titre, précédé du croissant.",
+        "name": "universKicker",
+        "type": "string",
+        "title": "Surtitre"
+      },
+      {
+        "initialValue": "Cinq mondes, une même maison",
+        "description": "Titre du bloc. Les univers affichés en dessous ne se saisissent pas ici : ce sont ceux créés dans « Univers », rangés selon leur ordre d'affichage.",
+        "name": "universTitle",
+        "type": "string",
+        "title": "Titre"
+      },
+      {
+        "rows": 3,
+        "initialValue": "Du tapis sous vos pieds à l'assiette de votre invité, chaque pièce raconte l'hospitalité orientale. Choisissez par où commencer.",
+        "description": "Le paragraphe d'introduction, sous le titre.",
+        "name": "universIntro",
+        "type": "text",
+        "title": "Chapeau"
+      },
+      {
+        "initialValue": "Voir",
+        "description": "Le mot cliquable en bas de chaque univers, suivi de la flèche.",
+        "name": "universLinkLabel",
+        "type": "string",
+        "title": "Libellé du lien des cartes"
+      },
+      {
+        "options": {
+          "accept": "video/mp4"
+        },
+        "description": "Vidéo courte et compressée, 5 Mo maximum — elle se charge sur tous les visiteurs. Sans fichier, la vidéo par défaut du site est utilisée.",
+        "name": "videoFile",
+        "type": "file",
+        "title": "Vidéo de fond"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "description": "Affichée le temps que la vidéo se charge.",
+        "fields": [
+          {
+            "description": "Décrit la photo pour les lecteurs d'écran et Google (ex. « Silhouettes réunies sur un tapis au lever du soleil »).",
+            "name": "alt",
+            "type": "string",
+            "title": "Texte alternatif"
+          }
+        ],
+        "name": "videoPoster",
+        "type": "image",
+        "title": "Image d'attente"
+      },
+      {
+        "initialValue": "Une pièce vous fait de l'œil ?",
+        "name": "videoTitle",
+        "type": "string",
+        "title": "Titre"
+      },
+      {
+        "rows": 3,
+        "initialValue": "Écrivez-nous sur WhatsApp : photos, dimensions, conseils, mise de côté — on s'occupe de tout.",
+        "name": "videoText",
+        "type": "text",
+        "title": "Description"
+      },
+      {
+        "initialValue": "Nous écrire sur WhatsApp",
+        "description": "Le numéro WhatsApp vers lequel il pointe se règle dans « Réglages du site ».",
+        "name": "videoCtaLabel",
+        "type": "string",
+        "title": "Libellé du bouton"
+      },
+      {
+        "initialValue": "La maison",
+        "name": "aboutKicker",
+        "type": "string",
+        "title": "Surtitre"
+      },
+      {
+        "initialValue": "Kaboul House, une histoire de famille",
+        "name": "aboutTitle",
+        "type": "string",
+        "title": "Titre"
+      },
+      {
+        "rows": 6,
+        "initialValue": "Depuis Kaboul jusqu'aux rives de l'Isère, Kaboul House rassemble ce que l'Orient fait de plus beau : des tapis qui traversent les générations, des objets qui réchauffent la maison, des saveurs qui racontent un pays. Chaque pièce est choisie par nos soins, auprès des artisans et des familles qui perpétuent ces savoir-faire.",
+        "description": "Quelques phrases de présentation de la maison.",
+        "name": "aboutText",
+        "type": "text",
+        "title": "Texte"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "description": "La photo verticale, à gauche du texte.",
+        "fields": [
+          {
+            "description": "Décrit la photo pour les lecteurs d'écran et Google (ex. « Tapis d'Orient déroulé dans une cour au crépuscule »).",
+            "name": "alt",
+            "type": "string",
+            "title": "Texte alternatif"
+          }
+        ],
+        "name": "aboutImageLarge",
+        "type": "image",
+        "title": "Grande photo"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "description": "La photo carrée, décalée sous la grande.",
+        "fields": [
+          {
+            "description": "Décrit la photo pour les lecteurs d'écran et Google (ex. « Silhouettes réunies sur un tapis au lever du soleil »).",
+            "name": "alt",
+            "type": "string",
+            "title": "Texte alternatif"
+          }
+        ],
+        "name": "aboutImageSmall",
+        "type": "image",
+        "title": "Petite photo"
+      },
+      {
+        "initialValue": "Nos coups de cœur",
+        "name": "featuredKicker",
+        "type": "string",
+        "title": "Surtitre"
+      },
+      {
+        "initialValue": "Cinq pièces qui font la maison",
+        "name": "featuredTitle",
+        "type": "string",
+        "title": "Titre"
+      },
+      {
+        "options": {
+          "layout": "grid"
+        },
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "max",
+                "constraint": 12
+              }
+            ]
+          }
+        ],
+        "description": "Choisissez les pièces à montrer dans le carrousel, et rangez-les par glisser-déposer. Leur photo, leur nom et leur univers viennent de la fiche produit : les modifier là-bas les met à jour partout.",
+        "of": [
+          {
+            "to": [
+              {
+                "type": "product"
+              }
+            ],
+            "type": "reference",
+            "title": "Reference to produit"
+          }
+        ],
+        "name": "featuredProducts",
+        "type": "array",
+        "title": "Produits mis en avant"
+      },
+      {
+        "initialValue": "Nous trouver",
+        "name": "shopsKicker",
+        "type": "string",
+        "title": "Surtitre"
+      },
+      {
+        "initialValue": "Deux adresses, une même maison",
+        "description": "Titre du bloc. Les boutiques affichées en dessous ne se saisissent pas ici : ce sont celles créées dans « Boutiques », rangées selon leur ordre d'affichage.",
+        "name": "shopsTitle",
+        "type": "string",
+        "title": "Titre"
+      },
+      {
+        "rows": 2,
+        "initialValue": "Ouverture prochaine — écrivez-nous sur WhatsApp pour être prévenus.",
+        "description": "Affiché à la place du relevé quand une boutique n'a ni téléphone, ni email, ni horaires, ni itinéraire.",
+        "name": "shopsEmptyText",
+        "type": "text",
+        "title": "Message d'une boutique sans coordonnées"
+      },
+      {
+        "initialValue": "Avis Google",
+        "name": "reviewsKicker",
+        "type": "string",
+        "title": "Surtitre"
+      },
+      {
+        "initialValue": "Ils ont poussé la porte",
+        "description": "Titre du bloc. Les avis affichés en dessous ne se saisissent pas ici : ce sont ceux créés dans « Avis Google », du plus récent au plus ancien.",
+        "name": "reviewsTitle",
+        "type": "string",
+        "title": "Titre"
+      },
+      {
+        "rows": 2,
+        "initialValue": "Les avis de nos clients apparaîtront ici très bientôt.",
+        "name": "reviewsEmptyText",
+        "type": "text",
+        "title": "Message quand aucun avis n'est publié"
+      },
+      {
+        "initialValue": "Voir notre fiche Google",
+        "description": "L'adresse de la fiche se règle dans « Réglages du site ». La flèche est ajoutée automatiquement.",
+        "name": "reviewsLinkLabel",
+        "type": "string",
+        "title": "Libellé du lien vers la fiche Google"
+      },
+      {
+        "validation": [
+          {
+            "level": "warning",
+            "rules": [
+              {
+                "flag": "max",
+                "constraint": 70
+              }
+            ],
+            "message": "Au-delà de 70 caractères, Google coupe le titre."
+          }
+        ],
+        "description": "Le titre affiché dans les résultats de recherche et l'onglet du navigateur. Environ 60 caractères. Vide, le titre par défaut du site est utilisé.",
+        "name": "seoTitle",
+        "type": "string",
+        "title": "Titre dans Google"
+      },
+      {
+        "rows": 3,
+        "validation": [
+          {
+            "level": "warning",
+            "rules": [
+              {
+                "flag": "max",
+                "constraint": 170
+              }
+            ],
+            "message": "Au-delà de 170 caractères, Google coupe la description."
+          }
+        ],
+        "description": "Le paragraphe sous le titre dans les résultats de recherche. Environ 155 caractères.",
+        "name": "seoDescription",
+        "type": "text",
+        "title": "Description dans Google"
+      }
+    ],
+    "name": "homePage",
+    "type": "document",
+    "title": "Page d'accueil"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "description": "Ex. Tapis, Toshak, Textiles, Art de la table, Fruits secs.",
+        "name": "title",
+        "type": "string",
+        "title": "Nom"
+      },
+      {
+        "options": {
+          "source": "title"
+        },
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "description": "Généré depuis le nom — ne pas changer une fois le site en ligne.",
+        "name": "slug",
+        "type": "slug",
+        "title": "Adresse de la page (slug)"
+      },
+      {
+        "description": "Un mot affiché au-dessus du nom, après le numéro : « Sol », « Assise », « Table »… Le numéro est calculé automatiquement selon l'ordre d'affichage.",
+        "name": "kicker",
+        "type": "string",
+        "title": "Thème (surtitre)"
+      },
+      {
+        "rows": 3,
+        "name": "description",
+        "type": "text"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "description": "Sans photo, la carte affiche une tuile en dégradé portant son numéro — le site reste présentable en attendant.",
+        "fields": [
+          {
+            "description": "Décrit la photo pour les lecteurs d'écran et Google (ex. « Tapis afghan rouge noué main »).",
+            "name": "alt",
+            "type": "string",
+            "title": "Texte alternatif"
+          }
+        ],
+        "name": "image",
+        "type": "image",
+        "title": "Photo de couverture"
+      },
+      {
+        "initialValue": 10,
+        "description": "1 = premier. Ordonne les univers sur la page d'accueil.",
+        "name": "order",
+        "type": "number",
+        "title": "Ordre d'affichage"
+      }
+    ],
+    "name": "category",
+    "type": "document",
+    "title": "Univers (catégorie)"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "title",
+        "type": "string",
+        "title": "Nom"
+      },
+      {
+        "options": {
+          "source": "title"
+        },
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "slug",
+        "type": "slug",
+        "title": "Adresse de la page (slug)"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "to": [
+          {
+            "type": "category"
+          }
+        ],
+        "name": "category",
+        "type": "reference",
+        "title": "Univers"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 1
+              }
+            ],
+            "message": "Au moins une photo."
+          }
+        ],
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "fields": [
+              {
+                "description": "Décrit la photo pour les lecteurs d'écran et Google (ex. « Tapis afghan rouge noué main »).",
+                "name": "alt",
+                "type": "string",
+                "title": "Texte alternatif"
+              }
+            ],
+            "type": "image"
+          }
+        ],
+        "name": "images",
+        "type": "array",
+        "title": "Photos"
+      },
+      {
+        "rows": 4,
+        "name": "description",
+        "type": "text"
+      }
+    ],
+    "name": "product",
+    "type": "document",
+    "title": "Produit"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "name",
+        "type": "string",
+        "title": "Nom"
+      },
+      {
+        "rows": 2,
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "description": "Adresse complète. Pour la 2e boutique, laisser « Adresse à venir » en attendant.",
+        "name": "address",
+        "type": "text",
+        "title": "Adresse"
+      },
+      {
+        "name": "phone",
+        "type": "string",
+        "title": "Téléphone"
+      },
+      {
+        "description": "Adresse email de contact de la boutique.",
+        "name": "email",
+        "type": "string"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "description": "Coller le lien de partage Google Maps de la boutique.",
+        "name": "mapsUrl",
+        "type": "url",
+        "title": "Lien itinéraire (Google Maps)"
+      },
+      {
+        "rows": 3,
+        "description": "Texte libre, ex. « Lun–Sam : 10h–19h ».",
+        "name": "hours",
+        "type": "text",
+        "title": "Horaires"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "fields": [
+          {
+            "description": "Décrit la photo pour les lecteurs d'écran et Google (ex. « Tapis afghan rouge noué main »).",
+            "name": "alt",
+            "type": "string",
+            "title": "Texte alternatif"
+          }
+        ],
+        "name": "image",
+        "type": "image",
+        "title": "Photo"
+      },
+      {
+        "initialValue": 10,
+        "name": "order",
+        "type": "number",
+        "title": "Ordre d'affichage"
+      }
+    ],
+    "name": "shop",
+    "type": "document",
+    "title": "Boutique"
+  },
+  {
+    "description": "Recopier ici de vrais avis Google — jamais d'avis inventés.",
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "author",
+        "type": "string",
+        "title": "Nom du client"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 1
+              },
+              {
+                "flag": "max",
+                "constraint": 5
+              }
+            ]
+          }
+        ],
+        "name": "rating",
+        "type": "number",
+        "title": "Note (1 à 5)"
+      },
+      {
+        "rows": 3,
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "text",
+        "type": "text",
+        "title": "Texte de l'avis"
+      }
+    ],
+    "name": "googleReview",
+    "type": "document",
+    "title": "Avis Google"
+  }
+]

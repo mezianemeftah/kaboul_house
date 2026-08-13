@@ -1,0 +1,1 @@
+import{u as e}from"./dist-D50ohdSO.js";function t(){return e().projectId}export{t};

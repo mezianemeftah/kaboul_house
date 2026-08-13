@@ -1,0 +1,1 @@
+import{Er as e}from"./datastores-D4iZNSXV-BvrVdbuU.js";var t=new WeakMap;function n(n){let r=t.get(n);if(r)return r;let i=e();return t.set(n,i),i}export{n as t};
