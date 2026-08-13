@@ -58,7 +58,7 @@ function Slide({ item, index }: { item: Item; index: number }) {
           src={item.src}
           alt={item.alt}
           fill
-          sizes="(min-width: 768px) 30vw, 75vw"
+          sizes="(min-width: 768px) 24vw, 66vw"
           className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
           style={{ transitionTimingFunction: "var(--ease-signature)" }}
         />
@@ -75,8 +75,8 @@ function Slide({ item, index }: { item: Item; index: number }) {
         className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-encre/80 to-transparent"
         aria-hidden
       />
-      <div className="absolute inset-x-0 bottom-0 p-sp-4">
-        <p className="font-bonny text-2xl font-medium leading-tight text-white md:text-3xl">
+      <div className="absolute inset-x-0 bottom-0 p-sp-3">
+        <p className="font-bonny text-xl font-medium leading-tight text-white md:text-2xl">
           {item.title}
         </p>
         {item.categoryTitle && (
@@ -88,7 +88,7 @@ function Slide({ item, index }: { item: Item; index: number }) {
 
   // `min-w-0` : sans lui, une piste flex refuse de rétrécir ses éléments.
   const shell =
-    "group relative aspect-[3/4] min-w-0 shrink-0 basis-[75%] overflow-hidden rounded-panel bg-encre sm:basis-[45%] lg:basis-[30%]";
+    "group relative aspect-[3/4] min-w-0 shrink-0 basis-[66%] overflow-hidden rounded-panel bg-encre sm:basis-[36%] lg:basis-[23%]";
 
   if (item.slug) {
     // `draggable={false}` : sinon le navigateur lance son propre glisser d'image
