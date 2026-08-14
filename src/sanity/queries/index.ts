@@ -27,6 +27,7 @@ export const HOME_QUERY = defineQuery(
     featuredKicker, featuredTitle,
     "featuredProducts": featuredProducts[]->{
       title, "slug": slug.current, images,
+      price, origin, sizes,
       "categoryTitle": category->title
     },
 
@@ -62,7 +63,8 @@ export const CATEGORY_QUERY = defineQuery(
     title, description, image,
     "products": *[_type == "product" && category._ref == ^._id]
       | order(title asc){
-        title, "slug": slug.current, description, images
+        title, "slug": slug.current, description, images,
+        price, origin, sizes
     }
   }`,
 );
@@ -85,7 +87,11 @@ export const PRODUCT_QUERY = defineQuery(
 );
 
 export const ALL_PRODUCTS_QUERY = defineQuery(
-  `*[_type == "product"] | order(title asc){title, "slug": slug.current, images, "categoryTitle": category->title}`,
+  `*[_type == "product"] | order(title asc){
+    title, "slug": slug.current, images,
+    price, origin, sizes,
+    "categoryTitle": category->title
+  }`,
 );
 
 export const PRODUCT_SLUGS_QUERY = defineQuery(

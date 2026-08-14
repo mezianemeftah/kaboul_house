@@ -57,6 +57,13 @@ export const product = defineType({
       validation: (rule) => rule.min(1).error("Au moins une photo."),
     }),
     defineField({ name: "description", title: "Description", type: "text", rows: 4 }),
+    defineField({
+      name: "price",
+      title: "Prix",
+      description:
+        "Ex. « 690 € », « 39 € / m² ». À laisser vide si le prix est sur demande : la carte affiche alors l'origine et la taille plutôt qu'une mention répétée sur toute la boutique.",
+      type: "string",
+    }),
 
     defineField({
       name: "origin",

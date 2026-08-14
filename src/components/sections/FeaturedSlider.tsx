@@ -6,7 +6,9 @@ import AutoScroll from "embla-carousel-auto-scroll";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback } from "react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { TagRow } from "@/components/ui/Tag";
 import { FALLBACK_PRODUCTS, PLACEHOLDER_GRADIENTS } from "@/lib/fallback-content";
+import { productTags, type ProductTag } from "@/lib/product-tags";
 import { imageUrl } from "@/sanity/lib/image";
 import type { HOME_QUERY_RESULT } from "@/sanity/types";
 
@@ -21,13 +23,23 @@ type Item = {
   slug: string | null;
   src: string | null;
   alt: string;
+  tags: ProductTag[];
 };
+
+/**
+ * Un seul tag ici, contre deux sur les listings : la vignette du carrousel est
+ * plus petite et porte déjà le nom de l'univers, que les pages catégorie
+ * n'affichent pas. Le tag retenu est donc le plus décisif — le prix s'il est
+ * connu, l'origine sinon.
+ */
+const TAGS_PAR_VIGNETTE = 1;
 
 const FALLBACK: Item[] = FALLBACK_PRODUCTS.map((i) => ({
   ...i,
   slug: null,
   src: null,
   alt: "",
+  tags: [],
 }));
 
 const FALLBACK_KICKER = "Nos coups de cœur";
@@ -45,6 +57,7 @@ function toItems(products: Product[] | null | undefined): Item[] {
       slug: p.slug,
       src: imageUrl(cover, 900),
       alt: cover?.alt ?? "",
+      tags: productTags(p, TAGS_PAR_VIGNETTE),
     });
   }
   return items.length > 0 ? items : FALLBACK;
@@ -82,6 +95,7 @@ function Slide({ item, index }: { item: Item; index: number }) {
         {item.categoryTitle && (
           <p className="mt-sp-1 text-sm font-light text-blush">{item.categoryTitle}</p>
         )}
+        <TagRow tags={item.tags} variant="onDark" />
       </div>
     </>
   );

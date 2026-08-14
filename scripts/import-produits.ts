@@ -37,12 +37,24 @@ type Produit = {
   tissage: string;
   tailles: string;
   entretien: string;
+  prix: string;
 };
+
+/**
+ * Trente-huit des cinquante-six fiches portent « sur demande » comme prix. La
+ * mention n'est pas une valeur : le champ Sanity doit rester vide, faute de quoi
+ * les deux tiers de la boutique afficheraient le même tag creux. Seuls les
+ * dix-huit prix chiffrés sont importés.
+ */
+function prixChiffre(valeur: string): string {
+  return /sur\s+demande/i.test(valeur) ? "" : valeur;
+}
 
 /** Les champs vides ne sont pas envoyés : mieux vaut absent que chaîne vide. */
 function caracteristiques(p: Produit): Record<string, string> {
   const paires: [string, string][] = [
     ["description", p.description],
+    ["price", prixChiffre(p.prix)],
     ["origin", p.origine],
     ["material", p.matiere],
     ["density", p.densite],

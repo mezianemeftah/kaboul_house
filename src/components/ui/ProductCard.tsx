@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { TagRow } from "@/components/ui/Tag";
 import { PLACEHOLDER_GRADIENTS } from "@/lib/fallback-content";
+import type { ProductTag } from "@/lib/product-tags";
 
 export type ProductCardItem = {
   key: string;
@@ -10,6 +12,8 @@ export type ProductCardItem = {
   slug: string | null;
   src: string | null;
   alt: string;
+  /** Origine, taille, prix — au plus deux, voir `productTags`. */
+  tags: ProductTag[];
 };
 
 /**
@@ -54,6 +58,7 @@ export function ProductCard({ item, index }: { item: ProductCardItem; index: num
         {item.categoryTitle && (
           <p className="mt-sp-1 text-sm font-light text-encre-douce">{item.categoryTitle}</p>
         )}
+        <TagRow tags={item.tags} variant="onLight" />
       </div>
     </>
   );

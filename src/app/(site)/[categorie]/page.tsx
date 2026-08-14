@@ -4,6 +4,7 @@ import { Pill } from "@/components/ui/Pill";
 import { ProductCard, type ProductCardItem } from "@/components/ui/ProductCard";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { FALLBACK_CATEGORIES } from "@/lib/fallback-content";
+import { productTags } from "@/lib/product-tags";
 import { whatsappUrl } from "@/lib/whatsapp";
 import { client } from "@/sanity/lib/client";
 import { sanityFetch } from "@/sanity/lib/fetch";
@@ -48,6 +49,7 @@ function toItems(categorie: CATEGORY_QUERY_RESULT): ProductCardItem[] {
       slug: p.slug,
       src: imageUrl(couverture, 800),
       alt: couverture?.alt ?? "",
+      tags: productTags(p),
     });
   }
   return items;

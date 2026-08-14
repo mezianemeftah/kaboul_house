@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ProductCard, type ProductCardItem } from "@/components/ui/ProductCard";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { FALLBACK_PRODUCTS } from "@/lib/fallback-content";
+import { productTags } from "@/lib/product-tags";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { imageUrl } from "@/sanity/lib/image";
 import { ALL_PRODUCTS_QUERY } from "@/sanity/queries";
@@ -13,11 +14,14 @@ export const metadata: Metadata = {
     "Toutes les pièces disponibles chez Kaboul House — tapis noués main, décoration et fruits secs d'Orient, à Grenoble et à Lyon.",
 };
 
+// Les pièces de repli n'ont ni prix ni origine : elles meublent la grille tant
+// que le dataset est vide, sans prétendre décrire un produit réel.
 const FALLBACK: ProductCardItem[] = FALLBACK_PRODUCTS.map((p) => ({
   ...p,
   slug: null,
   src: null,
   alt: "",
+  tags: [],
 }));
 
 function toItems(products: ALL_PRODUCTS_QUERY_RESULT | null): ProductCardItem[] {
@@ -32,6 +36,7 @@ function toItems(products: ALL_PRODUCTS_QUERY_RESULT | null): ProductCardItem[] 
       slug: p.slug,
       src: imageUrl(cover, 800),
       alt: cover?.alt ?? "",
+      tags: productTags(p),
     });
   }
   return items.length > 0 ? items : FALLBACK;
