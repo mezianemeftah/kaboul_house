@@ -10,9 +10,10 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "typegen": "sanity schema extract --path=.sanity/schema.json --force && sanity typegen generate",
-    "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "cf:fresh": "node scripts/vider-cache-fetch.mjs",
+    "cf:preview": "npm run cf:fresh && opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "cf:size": "node scripts/check-worker-size.mjs",
-    "cf:deploy": "opennextjs-cloudflare build && npm run cf:size && opennextjs-cloudflare deploy"
+    "cf:deploy": "npm run cf:fresh && opennextjs-cloudflare build && npm run cf:size && opennextjs-cloudflare deploy"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.20.2",
