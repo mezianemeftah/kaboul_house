@@ -86,8 +86,17 @@ export const PRODUCT_QUERY = defineQuery(
   }`,
 );
 
+/**
+ * Boutique : les pièces arrivent par univers, dans l'ordre d'affichage défini
+ * sur les fiches d'univers, et par titre à l'intérieur de chacun.
+ *
+ * L'ancien tri alphabétique global ouvrait la page sur « Amandes de Kandahar »
+ * et dispersait les tapis dans toute la grille. Or les tapis et les toshak font
+ * 70 % des ventes : ils doivent tenir les premiers écrans. Le nom de l'univers
+ * porté par chaque carte rend le regroupement lisible.
+ */
 export const ALL_PRODUCTS_QUERY = defineQuery(
-  `*[_type == "product"] | order(title asc){
+  `*[_type == "product"] | order(category->order asc, title asc){
     title, "slug": slug.current, images,
     price, origin, sizes,
     "categoryTitle": category->title

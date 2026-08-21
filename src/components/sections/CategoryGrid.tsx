@@ -30,7 +30,7 @@ const FALLBACK_IMAGES: Record<string, { imageSrc: string; alt: string }> = {
     imageSrc: "/images/category-sea.webp",
     alt: "Tapis rouge porté au-dessus de l'eau",
   },
-  textiles: {
+  decor: {
     imageSrc: "/images/category-night.webp",
     alt: "Tapis d'Orient dans une cour au crépuscule",
   },
@@ -47,21 +47,38 @@ const FALLBACK: Card[] = FALLBACK_CATEGORIES.map((c) => ({
 }));
 
 /**
- * Place de chaque carte dans le bento : deux larges en haut, trois en dessous.
+ * Place de chaque carte dans le bento, calée sur le poids commercial des trois
+ * pôles annoncés par le client : 70 % tapis et toshak (les matlas), 20 % art de
+ * la table et décor, 10 % fruits secs.
+ *
+ * La grille fait six colonnes sur trois rangées, soit dix-huit cases :
+ *
+ *   Tapis           4 × 2 = 8 ┐ 12 cases → 67 %
+ *   Toshak          2 × 2 = 4 ┘
+ *   Décor           2 × 1 = 2 ┐  4 cases → 22 %
+ *   Art de la table 2 × 1 = 2 ┘
+ *   Fruits secs     2 × 1 = 2     2 cases → 11 %
+ *
+ * Le repère est le slug et non le rang : réordonner les univers en back-office
+ * doit changer leur suite de lecture, pas la hiérarchie commerciale. Un univers
+ * qu'on ajouterait plus tard prend la taille des cartes du bas.
  *
  * Sur six colonnes, aucune cellule ne descend sous deux colonnes — un premier
  * essai en 2×2 serrait trop le surtitre, le titre, la description et le lien
- * dans une même case. Au-delà de cinq univers, les suivants reprennent la
- * largeur des cartes du bas.
+ * dans une même case.
  */
-const BENTO_SPANS = [
-  "sm:col-span-2 lg:col-span-3",
-  "sm:col-span-2 lg:col-span-3",
-  "lg:col-span-2",
-  "lg:col-span-2",
-  "sm:col-span-2 lg:col-span-2",
-];
+const BENTO_SPANS: Record<string, string> = {
+  tapis: "sm:col-span-2 lg:col-span-4 lg:row-span-2",
+  toshak: "sm:col-span-2 lg:col-span-2 lg:row-span-2",
+  decor: "lg:col-span-2",
+  "art-de-la-table": "lg:col-span-2",
+  "fruits-secs": "sm:col-span-2 lg:col-span-2",
+};
 
+/**
+ * Sans `sm:col-span-2`, les univers inconnus se rangent deux par deux sur
+ * tablette : seuls, ils laisseraient une demi-rangée vide à côté d'eux.
+ */
 const DEFAULT_SPAN = "lg:col-span-2";
 
 const FALLBACK_KICKER = "Nos univers";
@@ -118,12 +135,17 @@ export function CategoryGrid({
           {intro ?? FALLBACK_INTRO}
         </p>
 
-        <div className="mt-sp-5 grid auto-rows-[20rem] gap-sp-3 sm:grid-cols-2 md:mt-sp-6 lg:auto-rows-[23rem] lg:grid-cols-6">
+        {/*
+          17rem par rangée et non 23 : la troisième rangée qu'appelle la
+          hiérarchie 70/20/10 allongerait sinon une section qui se fige en bas
+          de l'écran, et son titre sortirait du cadre pendant la prise.
+        */}
+        <div className="mt-sp-5 grid auto-rows-[20rem] gap-sp-3 sm:grid-cols-2 md:mt-sp-6 lg:auto-rows-[17rem] lg:grid-cols-6">
           {cards.map((card, i) => (
             <Link
               key={card.slug}
               href={`/${card.slug}`}
-              className={`group relative overflow-hidden rounded-panel bg-encre ${BENTO_SPANS[i] ?? DEFAULT_SPAN}`}
+              className={`group relative overflow-hidden rounded-panel bg-encre ${BENTO_SPANS[card.slug] ?? DEFAULT_SPAN}`}
             >
               {card.src ? (
                 <Image

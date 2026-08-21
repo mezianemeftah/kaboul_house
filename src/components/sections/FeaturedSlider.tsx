@@ -43,7 +43,10 @@ const FALLBACK: Item[] = FALLBACK_PRODUCTS.map((i) => ({
 }));
 
 const FALLBACK_KICKER = "Nos coups de cœur";
-const FALLBACK_TITLE = "Cinq pièces qui font la maison";
+// Sans compte dans le titre : la sélection suit la part de chaque univers dans
+// les ventes, pas un nombre rond. Elle passera de dix à douze pièces sans que
+// le titre devienne faux.
+const FALLBACK_TITLE = "Les pièces qui font la maison";
 
 function toItems(products: Product[] | null | undefined): Item[] {
   const items: Item[] = [];

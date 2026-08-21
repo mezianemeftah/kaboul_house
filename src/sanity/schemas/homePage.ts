@@ -224,13 +224,13 @@ export const homePage = defineType({
       title: "Titre",
       type: "string",
       group: "coupsDeCoeur",
-      initialValue: "Cinq pièces qui font la maison",
+      initialValue: "Les pièces qui font la maison",
     }),
     defineField({
       name: "featuredProducts",
       title: "Produits mis en avant",
       description:
-        "Choisissez les pièces à montrer dans le carrousel, et rangez-les par glisser-déposer. Leur photo, leur nom et leur univers viennent de la fiche produit : les modifier là-bas les met à jour partout.",
+        "Choisissez les pièces à montrer dans le carrousel, et rangez-les par glisser-déposer. Leur photo, leur nom et leur univers viennent de la fiche produit : les modifier là-bas les met à jour partout. Gardez la proportion des ventes : sur dix pièces, sept tapis ou toshak, deux d'art de la table ou de décor, une de fruits secs.",
       type: "array",
       group: "coupsDeCoeur",
       of: [defineArrayMember({ type: "reference", to: [{ type: "product" }] })],

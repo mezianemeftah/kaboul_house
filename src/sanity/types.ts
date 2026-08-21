@@ -586,7 +586,7 @@ export type PRODUCT_QUERY_RESULT = {
 
 // Source: src/sanity/queries/index.ts
 // Variable: ALL_PRODUCTS_QUERY
-// Query: *[_type == "product"] | order(title asc){    title, "slug": slug.current, images,    price, origin, sizes,    "categoryTitle": category->title  }
+// Query: *[_type == "product"] | order(category->order asc, title asc){    title, "slug": slug.current, images,    price, origin, sizes,    "categoryTitle": category->title  }
 export type ALL_PRODUCTS_QUERY_RESULT = Array<{
   title: string | null;
   slug: string | null;
@@ -644,7 +644,7 @@ declare module "@sanity/client" {
     '*[_type == "category"] | order(order asc){title, "slug": slug.current}': NAV_CATEGORIES_QUERY_RESULT;
     '*[_type == "category" && defined(slug.current)]{"slug": slug.current}': CATEGORY_SLUGS_QUERY_RESULT;
     '*[_type == "product" && slug.current == $slug][0]{\n    title, description, images,\n    origin, material, density, style, pile, weave, sizes, care,\n    "category": category->{title, "slug": slug.current}\n  }': PRODUCT_QUERY_RESULT;
-    '*[_type == "product"] | order(title asc){\n    title, "slug": slug.current, images,\n    price, origin, sizes,\n    "categoryTitle": category->title\n  }': ALL_PRODUCTS_QUERY_RESULT;
+    '*[_type == "product"] | order(category->order asc, title asc){\n    title, "slug": slug.current, images,\n    price, origin, sizes,\n    "categoryTitle": category->title\n  }': ALL_PRODUCTS_QUERY_RESULT;
     '*[_type == "product" && defined(slug.current)]{"slug": slug.current}': PRODUCT_SLUGS_QUERY_RESULT;
     '*[_type == "shop"] | order(order asc){name, address, phone, email, hours, mapsUrl, mapEmbed, image}': SHOPS_QUERY_RESULT;
   }
