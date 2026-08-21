@@ -8,7 +8,7 @@ export const category = defineType({
     defineField({
       name: "title",
       title: "Nom",
-      description: "Ex. Tapis, Toshak, Textiles, Art de la table, Fruits secs.",
+      description: "Ex. Tapis, Toshak, Décor, Art de la table, Fruits secs.",
       type: "string",
       validation: (rule) => rule.required(),
     }),

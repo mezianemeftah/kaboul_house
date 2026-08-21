@@ -97,7 +97,7 @@ async function pageAccueil() {
     .setIfMissing({
       heroTitle: "L'Orient entre sous votre toit.",
       heroSubtitle:
-        "Tapis noués main, toshak, textiles, art de la table et fruits secs — de Kaboul jusqu'au cœur de Grenoble et de Lyon.",
+        "Tapis noués main, toshak, décor, art de la table et fruits secs — de Kaboul jusqu'au cœur de Grenoble et de Lyon.",
       heroCtaLabel: "Découvrir la boutique",
       heroCtaHref: "/boutique",
 
@@ -131,33 +131,40 @@ async function pageAccueil() {
 
       seoTitle: "Kaboul House — Bazar oriental à Grenoble",
       seoDescription:
-        "Tapis noués main, toshak kabuli, textiles, art de la table et fruits secs — de Kaboul, Téhéran et Istanbul jusqu'au cœur de Grenoble.",
+        "Tapis noués main, toshak kabuli, décor, art de la table et fruits secs — de Kaboul, Téhéran et Istanbul jusqu'au cœur de Grenoble.",
 
       ...photos,
     })
     .commit();
 }
 
+/**
+ * Les libellés sont ceux de la navigation du client — Tapis, Toshak, Décor,
+ * Art de la table — pour qu'un visiteur passe de son site au nôtre sans
+ * réapprendre le vocabulaire. Seuls les fruits secs gardent leur origine :
+ * « d'Afghanistan » est ici l'argument de vente, pas un ornement. Le surtitre
+ * porte la part poétique de la direction artistique.
+ */
 const UNIVERS = [
   {
     slug: "tapis",
     kicker: "Sol",
-    title: "Tapis & Qali",
+    title: "Tapis",
     description: "Du noué main afghan aux grands formats turcs et persans.",
     photo: { fichier: "category-sea.webp", alt: "Tapis rouge porté au-dessus de l'eau" },
   },
   {
     slug: "toshak",
     kicker: "Assise",
-    title: "Toshak & Majlis",
+    title: "Toshak",
     description: "L'assise afghane traditionnelle : kabuli, 2 ou 3 baleshta.",
     photo: null,
   },
   {
-    slug: "textiles",
+    slug: "decor",
     kicker: "Intérieur",
-    title: "Textiles & Décor",
-    description: "Sarqalini, rojayi, balesht — pour habiller chaque pièce.",
+    title: "Décor",
+    description: "Surtapis, coussins de sol et moquettes — de quoi habiller la pièce.",
     photo: {
       fichier: "category-night.webp",
       alt: "Tapis d'Orient dans une cour au crépuscule",
@@ -166,14 +173,14 @@ const UNIVERS = [
   {
     slug: "art-de-la-table",
     kicker: "Table",
-    title: "Art de la Table",
+    title: "Art de la table",
     description: "Services dorés, plateaux, thermos. L'hospitalité dressée.",
     photo: null,
   },
   {
     slug: "fruits-secs",
     kicker: "Saveurs",
-    title: "Fruits Secs d'Afghanistan",
+    title: "Fruits secs d'Afghanistan",
     description: "Amandes, pistaches, mûres — bio, et prêts à offrir.",
     photo: {
       fichier: "category-prayer.webp",

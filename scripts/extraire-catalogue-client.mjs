@@ -23,14 +23,32 @@ if (!SOURCE) {
 const SORTIE = join(process.cwd(), "content", "catalogue-client");
 const PHOTOS = join(SORTIE, "photos");
 
-/** Les cinq univers existent déjà dans Sanity (voir scripts/seed-content.ts). */
+/**
+ * Les cinq univers existent déjà dans Sanity (voir scripts/seed-content.ts).
+ * Les libellés reprennent ceux de la navigation du client — Tapis, Toshak,
+ * Décor, Art de la table — à une exception près : les fruits secs gardent leur
+ * origine, qui est l'argument de vente de la famille.
+ */
 const UNIVERS = {
-  carpets: { slug: "tapis", titre: "Tapis & Qali" },
-  toshak: { slug: "toshak", titre: "Toshak & Majlis" },
-  textiles: { slug: "textiles", titre: "Textiles & Décor" },
-  tableware: { slug: "art-de-la-table", titre: "Art de la Table" },
-  fruits: { slug: "fruits-secs", titre: "Fruits Secs d'Afghanistan" },
+  carpets: { slug: "tapis", titre: "Tapis" },
+  toshak: { slug: "toshak", titre: "Toshak" },
+  textiles: { slug: "decor", titre: "Décor" },
+  tableware: { slug: "art-de-la-table", titre: "Art de la table" },
+  fruits: { slug: "fruits-secs", titre: "Fruits secs d'Afghanistan" },
 };
+
+/**
+ * Le client range ses moquettes avec les tapis. Elles n'en sont pas : vendues
+ * au mètre, tissées machine, posées sur toute la pièce. Laissées dans `carpets`
+ * elles portaient la famille à 31 fiches sur 56 ; elles rejoignent Décor, qui
+ * réunit ce qui habille la pièce sans être un tapis noué main ni un toshak.
+ */
+const MOQUETTE = /^moquette/i;
+
+function universDe(it) {
+  if (it.cat === "carpets" && MOQUETTE.test(it.fr.name)) return UNIVERS.textiles;
+  return UNIVERS[it.cat];
+}
 
 /* ------------------------------------------------------------------ lecture */
 
@@ -81,7 +99,7 @@ const slugifier = (texte) =>
 function normaliser(CATALOG, photosEcrites) {
   const slugsPris = new Set();
   return CATALOG.map((it) => {
-    const univers = UNIVERS[it.cat];
+    const univers = universDe(it);
     if (!univers) throw new Error(`Univers inconnu « ${it.cat} » (produit ${it.id})`);
 
     const nom = it.fr.name;
